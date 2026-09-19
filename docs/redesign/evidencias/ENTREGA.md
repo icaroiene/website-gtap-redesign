@@ -146,8 +146,14 @@
 > Rodapé sem vídeo no mobile (só pôster). Medido: mobile 0,03 MB até a seção Vídeo (antes ≥2,5 MB
 > só de rodapé + streaming do hero); desktop ≈6 MB de vídeo em toda a home. **Lighthouse mobile**:
 > Acessibilidade 96 → corrigido `aria-hidden` com focáveis (floatbar usa `inert`); Boas práticas
-> 100; SEO 92 → adicionado `public/robots.txt`. Recomendação aberta: transcodificar o vídeo do hero
-> para um loop local ~2 MB (exige ler o arquivo de 122 MB do gtap.com.br).
+> 100; SEO 92 → adicionado `public/robots.txt`.
+>
+> **Revisão 2.18 (19/09/2026):** com autorização do cliente, o vídeo de abertura foi transcodificado
+> para um **loop local** `public/videos/bg-gtap-abertura.mp4` (22 s, 960×540, 24 fps, **1,58 MB**)
+> usado na moldura da seção Vídeo (`AMBIENT.gtapLoop`); o original remoto (122 MB) só toca no play
+> com som. Verificado: 0 requisições ao arquivo remoto na navegação normal. **Página interna da Open
+> removida** (`src/pages/open/`, `SectionIdealizador` morto e assets exclusivos) — "A Open" é link
+> externo e a rota antiga redireciona.
 
 _Implementação executada e verificada em 18/09/2026. Stack mantida: React 19 + Vite 6 + React Router 7 (JS)._
 

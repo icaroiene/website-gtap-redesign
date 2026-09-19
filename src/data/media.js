@@ -13,4 +13,7 @@ export const AMBIENT = {
   fortePoster: `${base}videos/bg-forte.webp`,
   agua: `${base}videos/bg-agua.mp4`,
   aguaPoster: `${base}videos/bg-agua.webp`,
+  // Loop leve (22 s, 960×540, 1,6 MB) do vídeo de abertura do GTAP para a moldura
+  // da seção Vídeo; o original remoto (122 MB) só toca no play com som.
+  gtapLoop: `${base}videos/bg-gtap-abertura.mp4`,
 };
