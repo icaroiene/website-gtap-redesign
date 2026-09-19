@@ -1,97 +1,94 @@
-.section-palestrantes {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding-block: 5%;
-  padding-inline: 12%;
-  background-image: url("../../../../assets/bgsection.webp");
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
+/* ===================== Palestrantes (Figma) ===================== */
+
+.speakers {
+  position: relative;
+  background: var(--color-navy);
+  color: var(--color-white);
+  padding-block: clamp(56px, 4.2vw, 80px) clamp(64px, 5vw, 96px);
+  overflow: clip;
+  isolation: isolate;
+}
+
+.speakers__title {
   text-align: center;
+  margin-bottom: clamp(32px, 4.5vw, 86px);
 }
 
-.section-palestrantes h3 {
-  color: #dda92e;
-  font-size: 40px;
-  font-weight: 600;
+.speakers__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(40px, 3.3vw, 64px) clamp(24px, 3.2vw, 62px);
 }
 
-.section-palestrantes h5 {
-  color: #02093a;
-  font-size: 20px;
-  padding-inline: 28%;
-}
-
-/* card dos palestrantes */
-.container-palestrantes {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.card-palestrantes {
+.speaker-card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 4px;
-  width: 230px;
-  height: 350px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 10px;
-  border: 2px solid #dda92e;
+  width: 100%;
+  text-align: left;
   cursor: pointer;
+  color: inherit;
+}
+.speaker-card__photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 495 / 633;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-white);
+}
+.speaker-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+.speaker-card__placeholder {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-display); font-size: 5rem; color: var(--color-navy);
+}
+.speaker-card__photo { transition: transform 500ms var(--ease-out), box-shadow 500ms var(--ease-out); }
+.speaker-card__photo img { transition: transform 900ms var(--ease-out); }
+@media (hover: hover) {
+  .speaker-card:hover .speaker-card__photo { transform: translateY(-8px); box-shadow: 0 30px 50px -30px rgb(0 0 0 / 70%); }
+  .speaker-card:hover .speaker-card__photo img { transform: scale(1.05); }
+  .speaker-card:hover .speaker-card__name { color: var(--color-yellow); }
 }
 
-.card-palestrantes:hover {
-  transform: scale(1.03);
+.speaker-card__name {
+  color: var(--color-white);
+  margin-top: clamp(16px, 1.7vw, 32px);
+  transition: color 360ms;
+}
+.speaker-card__role {
+  color: var(--color-white);
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: clamp(8px, 0.8vw, 16px);
 }
 
-.card-palestrantes h6 {
-  color: #dda92e;
-  font-size: 20px;
-  font-weight: 500;
+@media (max-width: 900px) { .speakers__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .speakers__grid { grid-template-columns: 1fr; max-width: 420px; } }
+
+/* "Ver biografia" surge sobre a foto no hover/foco */
+.speaker-card__hint {
+  position: absolute;
+  left: 50%; bottom: 18px;
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--color-yellow);
+  color: var(--color-navy);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 360ms var(--ease-out), transform 360ms var(--ease-out);
 }
-
-.card-palestrantes p {
-  color: #fff;
-  font-size: 13px;
-  font-weight: 400;
-  padding-bottom: 5%;
+@media (hover: hover) {
+  .speaker-card:hover .speaker-card__hint { opacity: 1; transform: translate(-50%, 0); }
 }
-
-@media (max-width: 768px) {
-  .section-palestrantes {
-    padding-inline: 5%;
-    padding-block: 10%;
-  }
-
-  .section-palestrantes h5 {
-    font-size: 15px;
-    padding: 0;
-  }
-
-  .container-palestrantes {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding-inline: 0;
-  }
-
-  .card-palestrantes {
-    width: calc(50% - 10px); /* duas por linha com gap */
-    max-width: 200px;
-    height: 250px;
-  }
-  .card-palestrantes h6 {
-    font-size: 15px;
-  }
-  .card-palestrantes p {
-    font-size: 12px;
-  }
-}
-
+.speaker-card:focus-visible .speaker-card__hint { opacity: 1; transform: translate(-50%, 0); }

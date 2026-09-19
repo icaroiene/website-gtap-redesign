@@ -1,68 +1,47 @@
+import { adaptLandingData } from "../../../../data/event";
+import { useReveal } from "../../../../hooks/useReveal";
+import { SplitWords } from "../../../../components/ui/SplitWords";
 import "./SectionPublico.css";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
-const sliderSettings = {
-  dots: false,
-  infinite: true,
-  speed: 5000,
-  slidesToShow: 7,
-  slidesToScroll: 7,
-  rows: 2,
-  autoplay: true,
-  autoplaySpeed: 0,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 5,
-        rows: 2
-      }
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 4,
-        rows: 2
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 3,
-        rows: 2
-      }
-    }
-  ]
-};
-
-
+// Instituições (dados reais: type 2 + 5 do landing_page.json), minimalista:
+// faixa branca, um título pequeno em caixa alta e uma única fileira de logos
+// (as imagens como vêm, sem recorte nem filtro) rolando devagar.
 export const SectionPublico = ({ data }) => {
-  const clientes = data.filter((cliente) => cliente.type === 2);
+  const { institutions, clients } = adaptLandingData(data);
+  const seen = new Set();
+  const logos = [...institutions, ...clients].filter((i) => {
+    if (!i.logo) return false;
+    const key = i.name.trim().toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const revealRef = useReveal({ deps: [logos.length] });
+  if (logos.length === 0) return null;
 
+  const row = (hidden) => (
+    <ul className="marquee__row" aria-hidden={hidden || undefined}>
+      {logos.map((l) => (
+        <li className="marquee__item" key={`${l.id}-${hidden ? "b" : "a"}`}>
+          <img src={l.logo} alt={hidden ? "" : l.name} loading="lazy" width="96" height="96" />
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
-    <section className="section-publico">
-      <div>
-        <h3>Grandes entidades públicas marcaram presença.</h3>
-      </div>
-      <div>
-        <h5>
-          Evento reuniu representantes de destaque para discutir soluções
-          inovadoras e fortalecer parcerias institucionais.
-        </h5>
-      </div>
-
-      {/* Carrossel com duas linhas */}
-      <div className="container-publico">
-        <Slider {...sliderSettings}>
-          {clientes.map((cliente) => (
-            <div key={cliente.id} className="card-publico">
-              <img src={cliente.mediaUrl} alt={`Cliente ${cliente?.title}`} loading="lazy" />
-            </div>
-          ))}
-        </Slider>
+    <section className="marquee" id="instituicoes" ref={revealRef} aria-labelledby="marquee-title">
+      <header className="marquee__head" data-reveal>
+        <p className="marquee__pre">Quem já participou</p>
+        <h2 id="marquee-title" className="display marquee__title split">
+          <SplitWords text="Instituições" />
+        </h2>
+      </header>
+      <div className="marquee__viewport" data-reveal data-reveal-index="1">
+        <div className="marquee__track">
+          {row(false)}
+          {row(true)}
+        </div>
       </div>
     </section>
   );

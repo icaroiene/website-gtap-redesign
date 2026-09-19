@@ -1,135 +1,97 @@
-.card-buttons-container {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  gap: 5px;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-  width: 100%;
+/* ================== Barra de conversão persistente ================== */
 
-  /* efeito de blur */
+.convbar {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  translate: -50% 0;
+  z-index: var(--z-actions);
+  width: min(100% - 32px, 940px);
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+  transition: opacity var(--dur-ui) var(--ease-out),
+    transform var(--dur-ui) var(--ease-out);
 }
-.card-button-left {
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid #ffffffc7;
-  border-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  color: #fff;
+.convbar.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Some quando o drawer/diálogo trava a rolagem */
+body.no-scroll .convbar {
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+}
+
+.convbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: 12px 12px 12px var(--space-6);
+  border-radius: var(--radius-control);
+  background: rgb(5 13 58 / 92%);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+  border: 1px solid var(--line-on-dark);
+  box-shadow: var(--shadow-float);
+}
+
+.convbar__info {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  line-height: 1.1;
 }
-.button-left-condition {
-  padding-inline: 90px;
-  padding-top: 4px;
-  font-size: 24px;
-  text-align: center;
+.convbar__price {
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
 }
-.card-button-left hr {
-  width: 100%;
-}
-
-.button-left-data {
-  display: flex;
-  flex-direction: row;
-  white-space: nowrap;
-  max-width: 150px;
-  gap: 30px;
-  padding-bottom: 8px;
-  color: #FFDF92;
-  animation: scroll 5s linear infinite;
+.convbar__price--sm { font-size: 1.1rem; }
+.convbar__meta {
+  color: var(--color-on-dark-muted);
+  font-size: 0.8rem;
 }
 
-@keyframes scroll {
-  from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-.card-button-right {
-   background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid #ffffffc7;
-  border-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  color: #fff;
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  min-width: 50vh;
-}
-
-.card-button-right button {
-  background: linear-gradient(to left, #dda92e, #ffdf92);
-  color: #000000;
-  padding-block: 2%;
-  border-radius: 10px;
-  cursor: pointer;
-  padding-inline: 20px;
-  padding-block: 10px;
-}
-
-.money-card-button {
-  font-size: 28px;
+.convbar__date {
+  margin-inline-start: auto;
+  color: var(--color-gold-soft);
   font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
-.button-right-submit {
-  font-size: 22px;
+.convbar__cta {
+  flex: 0 0 auto;
+  min-height: 48px;
+  white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-  .card-buttons-container {
-    flex-direction: column;
-    gap: 10px;
-    bottom: 10px;
-    padding-inline: 26px;
+/* -------- Mobile: uma linha compacta -------- */
+@media (max-width: 720px) {
+  .convbar {
+    width: calc(100% - 24px);
+    bottom: max(12px, env(safe-area-inset-bottom));
   }
+  .convbar__inner {
+    gap: var(--space-3);
+    padding: 10px 10px 10px var(--space-4);
+  }
+  .convbar__date { display: none; }
+  .convbar__price { font-size: 1.15rem; }
+  .convbar__meta { font-size: 0.72rem; }
+  .convbar__cta {
+    margin-inline-start: auto;
+    min-height: 46px;
+    padding-inline: var(--space-5);
+    font-size: 0.9rem;
+  }
+}
 
-  .card-button-left {
-    display: none;
-  }
-
-  .button-left-condition {
-    padding-inline: 20px;
-    font-size: 18px;
-  }
-
-  .button-left-data {
-    flex-wrap: wrap;
-    font-size: 14px;
-  }
-
-  .card-button-right {
-    flex-direction: row;   
-    gap: 10px;
-    min-width: fit-content;
-    
-  }
-
-  .card-button-right button {
-    width: 100%;
-    font-size: 16px;
-    padding: 8px 10px;
-  }
-
-  .money-card-button {
-    font-size: 20px;
-    text-align: left
-  }
-
-  .button-right-submit {
-    font-size: 18px;
-  }
+@media (max-width: 380px) {
+  .convbar__cta { padding-inline: var(--space-4); }
 }

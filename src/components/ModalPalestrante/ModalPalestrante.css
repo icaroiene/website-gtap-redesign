@@ -1,210 +1,170 @@
-/* Modal base */
-.modal-dialog {
-  display: flex;
-  border: none;
-  padding: 0;
-  background: transparent;
+/* ==================== Diálogo de biografia ==================== */
+
+.bio-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+}
+
+.bio-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(2 7 31 / 68%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: bio-fade var(--dur-ui) var(--ease-out);
+}
+
+.bio-modal__panel {
   position: relative;
-  width: 90vw;              /* ou 50vw se quiser mais estreito */         /* Limita a altura visível */
-  overflow-x: hidden;           /* Permite rolagem do próprio dialog */
-  box-sizing: border-box;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  width: min(94vw, 960px);
+  max-height: min(88vh, 720px);
+  background: var(--color-paper);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 40px 90px -30px rgb(2 7 31 / 70%);
+  animation: bio-pop var(--dur-ui) var(--ease-out);
 }
 
-.modal-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.7);
+.bio-modal__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-ink);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 20px -8px rgb(2 7 31 / 45%);
+  transition: transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .bio-modal__close:hover { background: var(--color-gold-soft); }
 }
 
-/* Estrutura do modal */
-.modal-structure {
+.bio-modal__media {
+  position: relative;
+  background: linear-gradient(160deg, #12205e, #050d3a);
+  min-height: 100%;
+}
+.bio-modal__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+}
+.bio-modal__placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 5rem;
+  color: var(--color-gold-soft);
+  opacity: 0.6;
+}
+
+.bio-modal__content {
+  padding: clamp(24px, 3vw, 44px);
+  overflow-y: auto;
+  color: var(--color-body);
+}
+.bio-modal__name {
+  color: var(--color-ink);
+  margin-top: var(--space-2);
+}
+.bio-modal__role {
+  color: var(--color-gold-deep);
+  font-weight: 600;
+  margin-top: var(--space-1);
+  margin-bottom: var(--space-5);
+}
+.bio-modal__bio {
+  color: #3a4064;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+.bio-modal__bio p + p { margin-top: var(--space-3); }
+.bio-modal__bio--empty { color: var(--color-muted); font-style: italic; }
+
+.bio-modal__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+.bio-modal__socials a {
+  padding: 8px 16px;
+  border-radius: var(--radius-control);
+  border: 1.5px solid rgb(0 13 116 / 22%);
+  color: var(--color-deep);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .bio-modal__socials a:hover {
+    background: rgb(0 13 116 / 6%);
+    border-color: var(--color-deep);
+  }
+}
+
+.bio-modal__nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  background: transparent;
-  position: relative;
-  width: 60%;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line-on-light);
 }
-
-/* Lado esquerdo - foto */
-.modal-photo {
-  display: flex;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  width: 300px;
-  min-height: 350px;
-  height: 350px;
-  border-radius: 150px;
-  border: 2px solid #dda92e;
-  margin-right: 30px;
-}
-/* Lado direito - texto */
-.modal-box {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background: white;
-    width: 100%;
-    height: 100%;
-    border-radius: 16px;
-    padding-block: 15px;
-    padding-inline: 20px;
-}
-
-/* Título */
-.modal-box h2 {
-  font-size: 26px;
-  font-weight: 500;
-  text-align: left;
-  color: #02093a;
- 
-}
-
-/* Subtítulo */
-.modal-box h4 {
-  font-size: 17px;
-  color: #02093a;
-  font-weight: 400;
-  text-align: left;
- 
-}
-
-/* Texto do corpo */
-.modal-box p {
+.bio-modal__nav button {
+  color: var(--color-deep);
+  font-weight: 600;
   font-size: 0.95rem;
-    text-align: left;
-  color: #02093A;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-}
-
-/* Ícone do LinkedIn */
-.modal-box .linkedin-icon {
-  width: 28px;
-  margin-top: 1rem;
   cursor: pointer;
+  padding: 8px 6px;
 }
-.footer-modal {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  text-align: left;
-}
-.iconbutton-social {
-  border: 2px solid #c7c7c7;
-  padding-block: 7px;
-  padding-inline: 10px;
-  border-radius: 100%;
-  font-size: 16px;
-  text-align: left;
-  color: #02093A;
-  cursor: pointer;
-  
+.bio-modal__count { color: var(--color-muted); font-size: 0.9rem; }
+
+@keyframes bio-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bio-pop {
+  from { opacity: 0; transform: scale(0.98) translateY(8px); }
+  to { opacity: 1; transform: none; }
 }
 
-/* Botão de fechar */
-.close {
-  position: absolute;
-  top: 1rem;
-  right: 1.2rem;
-  font-size: 20px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-}
-
-/* Botões de navegação ⟨ ⟩ */
-.nav-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  border-radius: 50%;
-  border: none;
-  font-size: 1.6rem;
-  width: 38px;
-  padding-top: 4px;
-  height: 38px;
-  cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  z-index: 10; /* garante que fique acima do modal */
-}
-
-.nav-left {
-  left: 5vw;
-}
-
-.nav-right {
-  right: 5vw;
-}
-
-/* Responsivo para telas pequenas */
+/* -------- Mobile -------- */
 @media (max-width: 720px) {
-  .modal-dialog {
-    width: 95vw;
+  .bio-modal__panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
     max-height: 90vh;
-    padding: 0;
-    overflow: auto;
   }
-
-  .modal-structure {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    padding-inline: 10px;
+  .bio-modal__media {
+    height: 220px;
+    min-height: 220px;
   }
-
-    .modal-photo {
-      display: none;
-    }
-
-  .modal-box {
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-  }
-
-  .modal-box h2 {
-    font-size: 20px;
-    text-align: center;
-  }
-
-  .modal-box h4 {
-    font-size: 15px;
-    text-align: center;
-  }
-
-  .modal-box p {
-    font-size: 0.9rem;
-    text-align: center;
-  }
-
-  .footer-modal {
-    justify-content: center;
-    text-align: center;
-  }
-
-  .close {
-    top: 10px;
-    right: 25px;
-  }
-
-  .nav-arrow {
-    bottom: 10px;
-    top: unset;
-    transform: none;
-    width: 36px;
-    height: 36px;
-    font-size: 1.2rem;
-  }
-
-  .nav-left {
-    left: 10px;
-  }
-
-  .nav-right {
-    right: 10px;
-  }
+  .bio-modal__media img { object-position: center 12%; }
+  .bio-modal__content { padding: var(--space-6); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .bio-modal__backdrop,
+  .bio-modal__panel { animation: none; }
+}

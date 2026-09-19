@@ -1,36 +1,91 @@
-.banner-container {
+/* ============================ Hero (Figma) ============================ */
+
+.hero {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: clamp(620px, 61.25vw, 1176px);
   display: flex;
-  justify-content: center;
+  align-items: center;
+  overflow: clip;
+  background: var(--color-navy);
+  padding-block: calc(var(--header-h) + var(--space-16)) var(--space-16);
+  isolation: isolate;
+}
+
+.hero__content {
+  /* Compensa o padding do header: sobe o bloco para o centro óptico */
+  padding-bottom: clamp(40px, 6vw, 110px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.video-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: 1;
+/* Título: cada linha sobe de dentro de um recorte (entrada como na referência) */
+.hero__title {
+  color: var(--color-white);
+  line-height: 1.1;
+  max-width: 1131px;
+  margin-bottom: clamp(16px, 1.7vw, 32px);
+}
+.hero__title.is-visible { animation: none; }
+.hero__title .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+.hero__title .line__in { display: inline-block; transform: translateY(115%); }
+.hero__title.is-visible .line__in {
+  animation: line-up 1000ms var(--ease-out) both;
+}
+.hero__title.is-visible .line:nth-child(2) .line__in { animation-delay: 140ms; }
+@keyframes line-up {
+  from { transform: translateY(115%); }
+  to { transform: none; }
+}
+/* Enquanto a tela de loading está na frente, o hero espera para animar */
+.loading-active .hero [data-reveal].is-visible,
+.loading-active .hero__title.is-visible .line__in { animation-play-state: paused; }
+
+.hero__sub {
+  color: var(--color-white);
+  max-width: 1015px;
+  line-height: 1.1;
 }
 
-@media (max-width: 768px) {
-  .banner-container {
-    margin-top: 20%;
-    width: 100%;
-    height: 300px;
-  }
-
-  .video-background {
-    width: 100%;
-    height: auto;
-    object-fit: fill;
-     z-index: 0;
-  }
+/* Linha de informação: texto puro (sem contorno, para não parecer botão),
+   caixa alta espaçada com pontos amarelos entre os itens */
+.hero__info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px clamp(14px, 1.2vw, 24px);
+  font-weight: 600;
+  font-size: var(--fs-nav);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  margin-bottom: clamp(20px, 2vw, 36px);
+}
+.hero__info-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-white);
 }
 
+.hero__actions {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(12px, 1.2vw, 20px);
+  margin-top: clamp(32px, 3.4vw, 64px);
+}
 
+@media (max-width: 720px) {
+  .hero__actions { width: 100%; flex-direction: column; }
+  .hero__actions .btn { width: 100%; }
+  .hero {
+    min-height: auto;
+    padding-block: calc(var(--header-h) + var(--space-12)) var(--space-16);
+  }
+  .hero__content { text-align: left; align-items: flex-start; }
+  .hero__title { font-size: clamp(3rem, 12vw, 4.4rem); }
+  .hero__sub { font-size: 1.15rem; }
+  .hero__info { font-size: 0.85rem; letter-spacing: 0.12em; justify-content: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__title .line__in { transform: none; animation: none !important; }
+}

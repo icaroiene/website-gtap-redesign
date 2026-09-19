@@ -1,103 +1,58 @@
-import { useEffect, useState } from "react";
-import "./SectionOpen.css"
-import globoOPen from "@/assets/globo-open.svg";
-
-//imagens da seção
-import image1 from "@/assets/open/image-escritorio.webp"
-import image2 from "@/assets/open/image-alexandre.webp"
-import image3 from "@/assets/open/image-equipe.webp"
-import image4 from "@/assets/open/image-apresentacao.webp"
-import image5 from "@/assets/open/image-debate.webp"
-import image6 from "@/assets/open/image-livro.webp"
-import imageMobile from "@/assets/open/group-image-open.webp"
-
-
-const textsTitles = [
-    { id: 0, value: "Segurança Financeira" },
-    { id: 1, value: "Solidez Fiscal" },
-    { id: 1, value: "Estratégia Fiscal" },
-    { id: 1, value: "Conformidade" },
-    { id: 1, value: "Resultados" },
-    { id: 1, value: "Economia inteligente" },
-];
-
+import "./SectionOpen.css";
+import globoOpen from "@/assets/globo-open.svg";
+import image1 from "@/assets/open/image-escritorio.webp";
+import image2 from "@/assets/open/image-alexandre.webp";
+import image3 from "@/assets/open/image-equipe.webp";
+import image4 from "@/assets/open/image-apresentacao.webp";
+import { AmbientVideo } from "../../../../components/media/AmbientVideo";
+import { AMBIENT } from "../../../../data/media";
+import { useReveal } from "../../../../hooks/useReveal";
+import { SplitWords } from "../../../../components/ui/SplitWords";
 
 export const SectionOpen = () => {
+  const revealRef = useReveal({ stagger: 80 });
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [displayText, setDisplayText] = useState("");
-    const texts = textsTitles.map((t) => t.value);
+  return (
+    <section className="open-hero" ref={revealRef}>
+      <AmbientVideo src={AMBIENT.praia} className="ambient--sea" mobile={false} />
 
-    useEffect(() => {
-        let charIndex = -1;
-        const fullText = texts[currentIndex];
-        setDisplayText("");
+      <div className="container open-hero__grid">
+        <div className="open-hero__content">
+          <p className="open-hero__eyebrow" data-reveal>A Open Soluções Tributárias</p>
+          <h1 className="display open-hero__title split" data-reveal data-reveal-index="1">
+            <SplitWords text="Conhecimento tributário" />
+            <br />
+            <span className="text-yellow"><SplitWords text="que gera segurança" start={2} /></span>
+          </h1>
+          <p className="body-lg open-hero__text" data-reveal data-reveal-index="2">
+            Consultoria, treinamentos, publicações e o sistema Gestão Tributária — para empresas e órgãos públicos gerirem retenções com confiança.
+          </p>
 
-        const typingInterval = setInterval(() => {
-            charIndex++;
-            if (charIndex < fullText.length) {
-                setDisplayText((prev) => prev + fullText[charIndex]);
-            } else {
-                clearInterval(typingInterval);
-                setTimeout(() => {
-                    setCurrentIndex((prev) => (prev + 1) % texts.length);
-                }, 1500);
-            }
-        }, 100);
-
-        return () => clearInterval(typingInterval);
-    }, [currentIndex]);
-
-
-
-
-    return (
-        <section className="section-sobre-open">
-            <div className="section-left-open">
-                {/* <div className="tag-open-page">
-                    <p>A mais de <b>17 anos</b> fazendo a <b>diferença</b> no setor tributário!</p>
-                </div> */}
-                {/* <div className="src-page-open">
-                    <p>
-                        Home&nbsp;&gt;&gt;&nbsp;<b>A Open</b>
-                    </p>
-                </div> */}
-                <div className="title-open-section">
-                    <h2>Conhecimento<br />
-                        tributário é <br /><b className="typing-js">{displayText}</b></h2>
-                </div>
-                <div className="title-open-section-mobile">
-                    <h2>Conhecimento
-                        tributário é <br /><b className="typing-js">{displayText}</b></h2>
-                </div>
-                <div>
-                    <a href="https://opentreinamentos.com.br/" target="_blank" rel="noopener noreferrer">
-                        <button><img src={globoOPen} alt="globo open" loading="lazy" />Saiba mais!</button>
-                    </a>
-                </div>
-                <div className="content-image-mobile-open">
-                    <img src={imageMobile} alt="Imagem mobile" loading="lazy" />
-                </div>
-                <div className="stars-content-open">
-                    <i className="fa-solid fa-star" style={{ color: "#dda92e" }}></i>
-                    <i className="fa-solid fa-star" style={{ color: "#dda92e" }}></i>
-                    <i className="fa-solid fa-star" style={{ color: "#dda92e" }}></i>
-                    <i className="fa-solid fa-star" style={{ color: "#dda92e" }}></i>
-                    <i className="fa-solid fa-star" style={{ color: "#dda92e" }}></i>
-                </div>
-                <div className="content-data-open">
-                    <h3><b>+20 mil</b> alunos treinados!</h3>
-                    <h3><b>+1000</b> empresas e entidades públicas atendidas!</h3>
-                </div>
+          <div className="open-hero__stats" data-reveal data-reveal-index="3">
+            <div>
+              <span className="display open-hero__num text-yellow">+20 mil</span>
+              <span className="open-hero__label">alunos treinados</span>
             </div>
-            <div className="section-right-open">
-                <img src={image1} loading="lazy" alt="Imagem 1" className="img-open-gallery img1" />
-                <img src={image2} loading="lazy" alt="Imagem 2" className="img-open-gallery img2" />
-                <img src={image3} loading="lazy" alt="Imagem 3" className="img-open-gallery img3" />
-                <img src={image4} loading="lazy" alt="Imagem 4" className="img-open-gallery img4" />
-                <img src={image5} loading="lazy" alt="Imagem 5" className="img-open-gallery img5" />
-                <img src={image6} loading="lazy" alt="Imagem 6" className="img-open-gallery img6" />
+            <div>
+              <span className="display open-hero__num text-yellow">+1.000</span>
+              <span className="open-hero__label">empresas e órgãos atendidos</span>
             </div>
-        </section>
-    )
-}
+          </div>
+
+          <a className="btn btn--yellow open-hero__cta" href="https://opentreinamentos.com.br/" target="_blank" rel="noopener noreferrer" data-reveal data-reveal-index="4">
+            <img src={globoOpen} alt="" aria-hidden="true" width="22" height="22" />
+            Conheça os treinamentos
+            <span className="visually-hidden"> (abre em nova aba)</span>
+          </a>
+        </div>
+
+        <div className="open-hero__gallery">
+          <img src={image3} alt="Equipe da Open" loading="lazy" className="open-hero__img open-hero__img--tall" data-reveal data-reveal-fx="wipe" />
+          <img src={image1} alt="Escritório da Open" loading="lazy" className="open-hero__img" data-reveal data-reveal-fx="scale" data-reveal-index="1" />
+          <img src={image2} alt="Alexandre Marques" loading="lazy" className="open-hero__img" data-reveal data-reveal-fx="scale" data-reveal-index="2" />
+          <img src={image4} alt="Apresentação da Open" loading="lazy" className="open-hero__img open-hero__img--wide" data-reveal data-reveal-fx="wipe" data-reveal-index="2" />
+        </div>
+      </div>
+    </section>
+  );
+};

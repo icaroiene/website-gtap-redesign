@@ -1,72 +1,52 @@
-.section-publico {
+/* ===================== Instituições — faixa branca minimalista ===================== */
+
+.marquee {
+  background: var(--color-white);
+  color: var(--color-navy);
+  padding-block: clamp(56px, 5.5vw, 104px);
+  overflow: clip;
+}
+
+/* Mesmo padrão de título de Ingressos: linha pequena + display Bebas */
+.marquee__head { text-align: center; margin: 0 var(--gutter) clamp(36px, 3.6vw, 72px); }
+.marquee__pre {
+  color: var(--color-navy);
+  font-size: var(--fs-lead);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.marquee__title { color: var(--color-navy); }
+
+.marquee__viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee__track {
   display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding-block: 5%;
-  padding-inline: 12%;
-  background: linear-gradient(to right, #02093a, #000d74);
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-  text-align: center;
+  width: max-content;
+  animation: marquee 90s linear infinite;
 }
+@media (hover: hover) { .marquee__viewport:hover .marquee__track { animation-play-state: paused; } }
 
-.section-publico h3 {
-  color: #dda92e;
-  font-size: 40px;
-  font-weight: 600;
-}
-
-.section-publico h5 {
-  color: #fff;
-  font-size: 20px;
-  padding-inline: 18%;
-}
-
-/* card dos clientes */
-
-.container-publico {
-  padding-bottom: 10px;
-}
-
-.card-publico {
-  padding: 5px;
-  display: flex !important;
-  justify-content: center;
+.marquee__row {
+  display: flex;
   align-items: center;
+  gap: clamp(28px, 3vw, 56px);
+  padding-right: clamp(28px, 3vw, 56px);
+  list-style: none;
+}
+/* Imagens como vêm (cartão + sombra já embutidos): só o tamanho */
+.marquee__item { flex: 0 0 auto; }
+.marquee__item img {
+  display: block;
+  width: clamp(72px, 6.6vw, 104px);
+  height: auto;
 }
 
-.card-publico img {
-  width: 150px;
-  max-width: 150px;
-  height: 150px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-@media (max-width: 768px) {
-  .section-publico {
-    padding-inline: 5%;
-    gap: 10px;
-  }
-  .container-publico {
-    justify-content: left;
-    gap: 2px;
-  }
-  .section-publico h3 {
-    font-size: 22px;
-    padding-inline: 0;
-  }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  .section-publico h5 {
-    font-size: 14px;
-    padding-inline: 0;
-    font-weight: 300;
-  }
-  .card-publico img {
-  width: 120px;
-  max-width: 120px;
-  height: 100px;
-  object-fit: contain;
-  border-radius: 10px;
-}
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+  .marquee__viewport { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
 }

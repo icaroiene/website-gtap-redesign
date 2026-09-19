@@ -1,81 +1,138 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import "./ModalPalestrante.css";
 
-export const ModalPalestrantes = ({ palestrantes, selecionado, onClose }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const dialogRef = useRef(null);
+export const ModalPalestrantes = ({ speakers, index, onChangeIndex, onClose }) => {
+  const panelRef = useRef(null);
+  const closeRef = useRef(null);
+  const triggerRef = useRef(null);
 
-    // Define o índice com base no palestrante clicado
-    useEffect(() => {
-        const index = palestrantes.findIndex(p => p.id === selecionado.id);
-        if (index !== -1) setCurrentIndex(index);
-    }, [selecionado, palestrantes]);
+  const speaker = speakers[index];
+  const total = speakers.length;
+  const hasNav = total > 1;
 
-    // Abre o dialog após montar
-    useEffect(() => {
-        if (dialogRef.current && !dialogRef.current.open) {
-            dialogRef.current.showModal();
-        }
-    }, []);
+  const goPrev = () => onChangeIndex((index - 1 + total) % total);
+  const goNext = () => onChangeIndex((index + 1) % total);
 
-    const current = palestrantes[currentIndex];
+  // Foco inicial + restauração + Escape + trap + bloqueio de rolagem.
+  useEffect(() => {
+    triggerRef.current = document.activeElement;
+    document.body.classList.add("no-scroll");
+    closeRef.current?.focus();
 
-    const next = () =>
-        setCurrentIndex((prev) => (prev + 1) % palestrantes.length);
-    const prev = () =>
-        setCurrentIndex((prev) =>
-            prev === 0 ? palestrantes.length - 1 : prev - 1
-        );
-
-    const fecharModal = () => {
-        dialogRef.current?.close();
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
         onClose();
+      } else if (e.key === "Tab") {
+        const f = panelRef.current?.querySelectorAll(
+          'a[href], button:not([disabled])'
+        );
+        if (!f || f.length === 0) return;
+        const first = f[0];
+        const last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+    document.addEventListener("keydown", onKey);
 
-    return (
+    return () => {
+      document.body.classList.remove("no-scroll");
+      document.removeEventListener("keydown", onKey);
+      if (triggerRef.current instanceof HTMLElement) triggerRef.current.focus();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-        <dialog className="modal-dialog" ref={dialogRef} onClose={fecharModal}>
-            <button className="nav-arrow nav-left" onClick={prev}><i class="fa-solid fa-chevron-left"></i></button>
-            <div className="modal-structure">
-                <div className="modal-photo"  style={{ backgroundImage: `url(${current?.mediaUrl})` }}>
+  if (!speaker) return null;
 
-                </div>
-                <div className="modal-box">
-                    <button className="close" onClick={fecharModal}>✕</button>
-                    <div>
-                        <h2>{current.title}</h2>
-                        <h4>{current.description}</h4>
-                    </div>
-                    <div>
-                        <p>{current.annotation}</p>
-                    </div>
-                    <div className="footer-modal">
-                        {current.instagram && (
-                            <a href={current.instagram} target="_blank" rel="noopener noreferrer">
-                            <button className="iconbutton-social">
-                                <i class="fa-brands fa-instagram"></i>
-                            </button>                             
-                            </a>
-                        )}
-                        {current.youtube && (
-                            <a href={current.youtube} target="_blank" rel="noopener noreferrer">
-                            <button className="iconbutton-social">
-                                <i class="fa-brands fa-youtube"></i>
-                            </button>                             
-                            </a>
-                        )}
-                        {current.linkedin && (
-                            <a href={current.linkedin} target="_blank" rel="noopener noreferrer">
-                            <button className="iconbutton-social">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </button>                             
-                            </a>
-                        )}
-                    </div>
-                </div>
+  const socials = Object.entries(speaker.socials || {}).filter(([, url]) => url);
+  const socialLabel = { instagram: "Instagram", youtube: "YouTube", linkedin: "LinkedIn" };
+
+  return createPortal(
+    <div className="bio-modal" role="presentation">
+      <div className="bio-modal__backdrop" onClick={onClose} />
+      <div
+        className="bio-modal__panel"
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="bio-modal-name"
+      >
+        <button
+          type="button"
+          className="bio-modal__close"
+          ref={closeRef}
+          onClick={onClose}
+          aria-label="Fechar biografia"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <div className="bio-modal__media">
+          {speaker.portrait ? (
+            <img src={speaker.portrait} alt={`Retrato de ${speaker.name}`} />
+          ) : (
+            <span className="bio-modal__placeholder" aria-hidden="true">
+              {speaker.name.charAt(0)}
+            </span>
+          )}
+        </div>
+
+        <div className="bio-modal__content">
+          <p className="eyebrow text-gold">Palestrante</p>
+          <h2 className="h3 bio-modal__name" id="bio-modal-name">
+            {speaker.name}
+          </h2>
+          {speaker.role && <p className="bio-modal__role">{speaker.role}</p>}
+
+          <div className="bio-modal__bio">
+            {speaker.bio ? (
+              <p>{speaker.bio}</p>
+            ) : (
+              <p className="bio-modal__bio--empty">
+                Biografia completa em breve.
+              </p>
+            )}
+          </div>
+
+          {socials.length > 0 && (
+            <div className="bio-modal__socials">
+              {socials.map(([key, url]) => (
+                <a
+                  key={key}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {socialLabel[key] || key}
+                </a>
+              ))}
             </div>
-            <button className="nav-arrow nav-right" onClick={next}><i class="fa-solid fa-chevron-right"></i></button>
-        </dialog>
+          )}
 
-    );
+          {hasNav && (
+            <div className="bio-modal__nav">
+              <button type="button" onClick={goPrev} aria-label="Palestrante anterior">
+                <span aria-hidden="true">←</span> Anterior
+              </button>
+              <span className="bio-modal__count" aria-hidden="true">
+                {index + 1} / {total}
+              </span>
+              <button type="button" onClick={goNext} aria-label="Próximo palestrante">
+                Próximo <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
 };

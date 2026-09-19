@@ -1,0 +1,34 @@
+/* ===================== Vídeo ambiente ===================== */
+
+.ambient {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient__poster,
+.ambient__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ambient__video { opacity: 0; transition: opacity 1200ms var(--ease-out); }
+.ambient__video.is-ready { opacity: 1; }
+
+/* Looks prontos para fundos de seção azul (sempre em baixa opacidade sobre o azul) */
+/* Praia da Barra desfocada — heros */
+.ambient--sea {
+  z-index: -1;
+  opacity: 0.32;
+  filter: blur(10px) saturate(1.15);
+  transform: scale(1.08);
+}
+/* Água com reflexos — seções internas e rodapé */
+.ambient--water {
+  z-index: -1;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  filter: blur(2px) saturate(1.1);
+}

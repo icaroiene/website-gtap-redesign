@@ -1,54 +1,68 @@
-import "./CardButton.css";
+import { useEffect, useState } from "react";
 import { useLoteAtual } from "../../Utils/useLoteAtual";
+import { EVENT, ACTIONS } from "../../data/event";
+import "./CardButton.css";
 
+// Barra de conversão persistente e compacta.
+// Aparece quando o hero sai da viewport (IntersectionObserver, não wheel).
 export const CardButton = () => {
-  const { precoAtual, nomeLoteAtual } = useLoteAtual();
+  const { precoAtual, nomeLoteAtual, loteAtual } = useLoteAtual();
+  const [visible, setVisible] = useState(false);
 
-  //Recebe o nome do lote atual e converte para o texto que o botão pede de acorod ao design
-
-  const textoBotao = (() => {
-    switch (nomeLoteAtual) {
-      case "Primeiro Lote":
-        return "LOTE 1 DISPONÍVEL";
-      case "Segundo Lote":
-        return "LOTE 2 DISPONÍVEL";
-      case "Terceiro Lote":
-        return "LOTE 3 DISPONÍVEL";
-      default:
-        return "CONSULTAR LOTES";
+  useEffect(() => {
+    const hero = document.getElementById("inicio");
+    if (!hero || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
     }
-  })();
+    const obs = new IntersectionObserver(
+      ([entry]) => setVisible(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-40% 0px 0px 0px" }
+    );
+    obs.observe(hero);
+    return () => obs.disconnect();
+  }, []);
+
+  const hasLote = Boolean(loteAtual && precoAtual);
 
   return (
-    <div className="card-buttons-container">
-      <div className="card-button-left">
-        <div className="button-left-condition">
-          <p>Condições especiais para grupo</p>
+    <div
+      className={`convbar${visible ? " is-visible" : ""}`}
+      role="region"
+      aria-label="Inscrição no GTAP"
+      aria-hidden={!visible}
+    >
+      <div className="convbar__inner">
+        <div className="convbar__info">
+          {hasLote ? (
+            <>
+              <span className="convbar__price">{precoAtual}</span>
+              <span className="convbar__meta">
+                {nomeLoteAtual} · por participante
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="convbar__price convbar__price--sm">
+                Inscrições abertas
+              </span>
+              <span className="convbar__meta">Consulte as condições</span>
+            </>
+          )}
         </div>
-        <hr />
-        <div className="button-left-data">
-          <p>08 E 09 DE OUTUBRO DE 2026</p>
-          <p>08 E 09 DE OUTUBRO DE 2026</p>
-          <p>08 E 09 DE OUTUBRO DE 2026</p>
-          <p>08 E 09 DE OUTUBRO DE 2026</p>
-          <p>08 E 09 DE OUTUBRO DE 2026</p>
-          <p>08 E 09 DE OUTUBRO DE 2026</p>
+
+        <div className="convbar__date" aria-hidden="true">
+          {EVENT.dateShort} · {EVENT.city}
         </div>
-      </div>
-      <div className="card-button-right">
-        <div>
-          <p className="money-card-button">{precoAtual}</p>
-          <p>{textoBotao}</p>
-        </div>
-        <div className="button-right-submit">
-          <a
-            href="https://api.whatsapp.com/send/?phone=5571992084907&text=Quero%20informa%C3%A7%C3%A3o%20sobre%20o%20GTAP&type=phone_number&app_absent=0
-"
-            target="blank"
-          >
-            <button>Garanta a sua vaga</button>
-          </a>
-        </div>
+
+        <a
+          className="btn btn--primary convbar__cta"
+          href={ACTIONS.registrationUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Garantir minha vaga
+        </a>
       </div>
     </div>
   );

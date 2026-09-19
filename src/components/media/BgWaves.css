@@ -1,0 +1,79 @@
+/* ============== Fundo abstrato: palmeiras desfocadas + sol + grão ============== */
+
+.bgw {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Bloom quente (sol) */
+.bgw__sun {
+  position: absolute;
+  width: 80vw; height: 80vw;
+  max-width: 1200px; max-height: 1200px;
+  right: -25%; top: -40%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 199 67 / 22%) 0%, rgb(255 199 67 / 8%) 36%, transparent 64%);
+  animation: bgw-sun 24s ease-in-out infinite alternate;
+}
+
+/* Camada desfocada como um vídeo fora de foco (referência: blur ~14px, 60%) */
+.bgw__blur {
+  position: absolute;
+  inset: -8%;
+  filter: blur(13px);
+  opacity: 0.78;
+  will-change: transform;
+  animation: bgw-drift 30s ease-in-out infinite alternate;
+}
+.bgw--yellow .bgw__blur { color: #ffc743; }
+.bgw--white  .bgw__blur { color: #ffffff; opacity: 0.32; }
+/* Sobre fundos amarelos: sombras de coqueiro (azul da marca, bem suave) + luz branca */
+.bgw--navy   .bgw__blur { color: #02093a; opacity: 0.15; }
+.bgw--navy   .bgw__sun {
+  background: radial-gradient(circle, rgb(255 255 255 / 42%) 0%, rgb(255 255 255 / 14%) 36%, transparent 64%);
+}
+.bgw--navy   .bgw__grain { opacity: 0.05; }
+
+/* Cada coroa tem o centro ancorado num canto (translate 50%) e as frondes
+   (≈40% da largura do SVG) varrem o quadro a partir dali. */
+.bgw__crown {
+  position: absolute;
+  width: clamp(1100px, 120vw, 2200px);
+  aspect-ratio: 1;
+  overflow: visible;
+}
+.bgw__crown--tr { right: -4vw; top: -6vw; transform: translate(50%, -50%); }
+.bgw__crown--bl { left: -4vw; bottom: -8vw; transform: translate(-50%, 50%) rotate(180deg); }
+@media (max-width: 720px) {
+  .bgw__crown { width: 190vw; }
+  .bgw__crown--tr { right: -10vw; top: -12vw; }
+  .bgw__crown--bl { left: -12vw; bottom: -14vw; }
+}
+
+/* O balanço de cada fronde é SMIL (animateTransform) no próprio SVG,
+   girando em torno da coroa; desligado com reduced-motion via JS. */
+@keyframes bgw-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-2%, 1.5%, 0) scale(1.04); }
+}
+@keyframes bgw-sun {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-6%, 8%) scale(1.08); }
+}
+
+/* Grão fino para tirar o aspecto "digital" do desfoque */
+.bgw__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgw__blur, .bgw__sun { animation: none; }
+}

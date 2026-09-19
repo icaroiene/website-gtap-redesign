@@ -1,68 +1,141 @@
-.section-localizacao {
+/* ===================== Localização (padrão Vídeo + mapinha) ===================== */
+
+.venue {
+  background: var(--color-navy);
+  color: var(--color-white);
+  padding: clamp(16px, 2.08vw, 40px);
+  padding-bottom: clamp(48px, 4.2vw, 80px);
+}
+.venue__frame {
+  position: relative;
+  aspect-ratio: 1840 / 1000;
+  border-radius: var(--radius-frame);
+  overflow: hidden;
+  background: var(--color-navy-deep);
+}
+.venue__photo {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform 1400ms var(--ease-out);
+}
+.venue__frame::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgb(2 9 58 / 0%) 40%, rgb(2 9 58 / 55%) 100%);
+  pointer-events: none;
+}
+@media (hover: hover) { .venue__frame:hover .venue__photo { transform: scale(1.03); } }
+
+/* Lettering: hierarquia máxima, canto inferior direito */
+.venue__title {
+  position: absolute;
+  z-index: 2;
+  right: clamp(20px, 3.3vw, 64px);
+  bottom: clamp(20px, 3.5vw, 64px);
+  margin: 0;
+  color: var(--color-white);
+  text-align: right;
+  line-height: 0.86;
+  font-size: clamp(3rem, 7.5vw, 9rem);
+  text-shadow: 0 6px 40px rgb(0 0 0 / 45%);
+}
+
+/* Mapinha embutido (canto inferior esquerdo) */
+.venue__mapcard {
+  position: absolute;
+  z-index: 2;
+  left: clamp(16px, 2.5vw, 48px);
+  bottom: clamp(16px, 2.5vw, 48px);
+  width: clamp(220px, 27vw, 520px);
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-navy);
+  border: 2px solid rgb(255 255 255 / 70%);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 70%);
+}
+.venue__map { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; filter: saturate(0.9); }
+.venue__mapcard-label {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: rgb(2 9 58 / 82%);
+  color: var(--color-white);
+  font-size: clamp(0.85rem, 0.95vw, 1.1rem);
+  letter-spacing: -0.01em;
+  pointer-events: none;
+}
+.venue__pin { color: var(--color-yellow); }
+
+/* Pílula de informação + único botão */
+.venue__meta {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: clamp(16px, 1.5vw, 28px);
+  margin-top: clamp(32px, 3.3vw, 64px);
+}
+.venue__pill {
+  font-weight: 600;
+  font-size: var(--fs-nav);
+  letter-spacing: 0.08em;
+  padding: clamp(12px, 1.3vw, 25px) clamp(24px, 3vw, 58px);
+  border: 2px solid rgb(255 255 255 / 70%);
+  border-radius: var(--radius-pill);
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .venue__frame { aspect-ratio: 4 / 5; }
+  .venue__title { right: 16px; bottom: clamp(220px, 46vw, 300px); font-size: 2.8rem; }
+  .venue__mapcard { left: 16px; right: 16px; bottom: 16px; width: auto; aspect-ratio: 16 / 10; }
+  .venue__pill { font-size: 0.95rem; letter-spacing: 0.05em; }
+}
+
+/* Mapinha sobe sob o cursor */
+.venue__mapcard { transition: transform 500ms var(--ease-out), box-shadow 500ms var(--ease-out); }
+@media (hover: hover) {
+  .venue__mapcard:hover { transform: translateY(-6px); box-shadow: 0 40px 70px -30px rgb(0 0 0 / 80%); }
+}
+
+/* ===== Pontos turísticos: três fotos reais de Salvador, levemente inclinadas ===== */
+.venue__spots-wrap { margin-top: clamp(56px, 5.5vw, 104px); }
+.venue__spots-title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: clamp(1.8rem, 3vw, 3.4rem);
+  text-align: center;
+  color: var(--color-white);
+  margin-bottom: clamp(28px, 3.2vw, 60px);
+}
+.venue__spots-title em { font-style: normal; color: var(--color-yellow); }
+.venue__spots {
+  list-style: none;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding-inline: 12%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
-  height: 100%;
-  background-color: #d3d3d3;
-  background-blend-mode: multiply;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 56px);
+  align-items: start;
 }
-
-.section-localizacao-left {
-  padding-block: 10%;
+.venue__spot { --rot: 0deg; transform: rotate(var(--rot)); transition: transform 600ms var(--ease-out); }
+.venue__spot:nth-child(1) { --rot: -3deg; }
+.venue__spot:nth-child(2) { --rot: 2deg; margin-top: clamp(24px, 3vw, 56px); }
+.venue__spot:nth-child(3) { --rot: -2deg; }
+.venue__spot-fig {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-navy-deep);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 75%);
 }
-.section-localizacao-left iframe {
-  border: none;
-  border-radius: 10px;
-  width: 500px;
-  height: 500px;
+.venue__spot-fig { position: relative; }
+.venue__spot-video { transition: transform 1200ms var(--ease-out); }
+.venue__spot-name { color: var(--color-white); margin-top: clamp(14px, 1.4vw, 24px); transition: color 360ms; }
+.venue__spot-note { color: var(--color-white); opacity: 0.8; font-size: var(--fs-body); margin-top: 4px; }
+@media (hover: hover) {
+  .venue__spot:hover { transform: rotate(0deg) translateY(-8px); }
+  .venue__spot:hover .venue__spot-video { transform: scale(1.06); }
+  .venue__spot:hover .venue__spot-name { color: var(--color-yellow); }
 }
-
-.section-localizacao-right {
-  display: flex;
-  padding-block: 10%;
-  align-items: end;
-}
-.box-text-local {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.box-text-local h5 {
-  font-size: 28px;
-  font-weight: 500;
-  color: #fff;
-}
-.box-text-local b {
-  color: #dda92e;
-}
-
-.box-text-local p {
-  font-size: 16px;
-  color: #fff;
-}
-
-@media (max-width: 768px) {
-  .section-localizacao {
-    display: flex;
-    flex-direction: column-reverse;
-    padding-inline: 20px;
-
-  }
-  .section-localizacao-left iframe {
-    border: none;
-    border-radius: 10px;
-    width: 100%;
-    height: 300px;
-  }
-  .box-text-local p {
-  font-size: 13px;
-}
+@media (max-width: 860px) {
+  .venue__spots { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding: 8px 4px 16px; scrollbar-width: none; }
+  .venue__spots::-webkit-scrollbar { display: none; }
+  .venue__spots .venue__spot { flex: 0 0 72vw; scroll-snap-align: start; margin-top: 0; --rot: 0deg; }
 }

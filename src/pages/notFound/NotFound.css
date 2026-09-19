@@ -1,0 +1,19 @@
+/* ===================== 404 (padrão Figma) ===================== */
+
+.notfound {
+  position: relative;
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  background: var(--color-navy);
+  color: var(--color-white);
+  padding-top: calc(var(--header-h) + 48px);
+  padding-bottom: 64px;
+  overflow: clip;
+  isolation: isolate;
+}
+.notfound__inner { max-width: 720px; }
+.notfound__code { line-height: 1; margin-bottom: 16px; }
+.notfound__title { color: var(--color-white); margin-bottom: 16px; }
+.notfound__text { margin-bottom: 32px; }
+.notfound__actions { display: flex; flex-wrap: wrap; gap: 16px; }

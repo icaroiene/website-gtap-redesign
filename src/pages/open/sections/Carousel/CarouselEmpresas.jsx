@@ -1,52 +1,25 @@
-import "./CarouselEmpresas.css"
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import "./CarouselEmpresas.css";
+import { useReveal } from "../../../../hooks/useReveal";
 
-// configuração da lib de slide carossel
-const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 8,
-    slidesToScroll: 2,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 10,
-            }
-        },
-        {
-            breakpoint: 768,
-            settings: {
-                slidesToShow: 8,
-            }
-        },
-        {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 5,
-            }
-        }
-    ]
+export const CarouselEmpresas = ({ clientes = [] }) => {
+  const revealRef = useReveal({ deps: [clientes.length] });
+
+  if (clientes.length === 0) return null;
+
+  return (
+    <section className="open-clients surface-white section" ref={revealRef}>
+      <div className="container">
+        <p className="open-clients__label" data-reveal>
+          Empresas e órgãos públicos que confiam na Open
+        </p>
+        <ul className="open-clients__grid" data-reveal>
+          {clientes.map((c) => (
+            <li className="open-clients__logo" key={c.id}>
+              <img src={c.logo} alt={c.name} loading="lazy" width="140" height="64" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
 };
-
-
-export const CarouselEmpresas = ({clientes}) => {
-    return (
-        <section className="container-empresas-open-slide">
-            <div className="section-empresas-open">
-                <Slider {...sliderSettings}>
-                    {clientes.map((cliente) => (
-                        <div key={cliente.id} className="logo-slide">
-                            <img src={cliente.mediaUrl} loading="lazy" alt={`Cliente ${cliente?.title}`} />
-                        </div>
-                    ))}
-                </Slider>
-            </div>
-        </section>
-    )
-}

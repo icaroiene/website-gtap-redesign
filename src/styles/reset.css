@@ -114,11 +114,16 @@ section {
 html,
 body {
   width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
   line-height: 1.3;
-  overflow-x: hidden; /* Evita transbordamento horizontal */
+}
+
+/* Clipe horizontal no root sem criar container de rolagem aninhado
+   (não usar height:100% + overflow-x:hidden no body — isso quebra a
+   rolagem da janela e o scroll-behavior). */
+html {
+  overflow-x: clip;
 }
 
 /* Remove estilos padrão de listas */

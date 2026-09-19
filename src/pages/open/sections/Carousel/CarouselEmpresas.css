@@ -1,64 +1,38 @@
-/* seção carrosel de empresas */
-.container-empresas-open-slide {
-    padding-inline: 12%;
-    padding-block: 2%;
+/* ===================== Open — clientes ===================== */
+
+.open-clients {
+  background: var(--color-white);
+  color: var(--color-ink);
+  padding-block: clamp(48px, 4.2vw, 80px);
 }
-
-.section-empresas-open {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    /* importante para esconder a parte que "transborda" */
+.open-clients__label {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: clamp(1.6rem, 2.6vw, 3rem);
+  text-align: center;
+  color: var(--color-navy);
+  margin-bottom: clamp(24px, 2.6vw, 48px);
 }
-
-.logo-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.open-clients__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: clamp(12px, 1vw, 20px);
+  list-style: none;
 }
-
-.logo-slide img {
-    max-width: 120px;
-    width: 120px;
-    object-fit: contain;
+.open-clients__logo {
+  display: grid; place-items: center;
+  aspect-ratio: 16 / 9;
+  padding: 16px;
+  border: 1px solid rgb(2 9 58 / 12%);
+  border-radius: var(--radius-sm);
+  transition: transform 360ms var(--ease-out), border-color 360ms;
 }
-
-.section-empresas-open::before,
-.section-empresas-open::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 500px;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
+.open-clients__logo img {
+  max-width: 100%; max-height: 48px; width: auto; height: auto; object-fit: contain;
+  filter: grayscale(1); opacity: 0.7; transition: filter 360ms, opacity 360ms;
 }
-
-.section-empresas-open::before {
-    left: 0;
-    background: linear-gradient(to right, white, transparent);
+@media (hover: hover) {
+  .open-clients__logo:hover { transform: translateY(-4px); border-color: var(--color-yellow); }
+  .open-clients__logo:hover img { filter: grayscale(0); opacity: 1; }
 }
-
-.section-empresas-open::after {
-    right: 0;
-    background: linear-gradient(to left, white, transparent);
-}
-
-@media (max-width: 768px) {
-
-/* seção carrosel de empresas */
-    .container-empresas-open-slide {
-        padding-inline: 0;
-        padding-block: 8px;
-    }
-
-    .section-empresas-open::before,
-    .section-empresas-open::after {
-        width: 85px;
-    }
-
-    .logo-slide img {
-        width: 70px;
-        object-fit: contain;
-    }
-}
+@media (max-width: 560px) { .open-clients__grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); } }

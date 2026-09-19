@@ -1,29 +1,46 @@
+import { useState } from "react";
 import "./SectionAbout.css";
+import { useReveal } from "../../../../hooks/useReveal";
+import { SplitWords } from "../../../../components/ui/SplitWords";
+import { BgWaves } from "../../../../components/media/BgWaves";
+import playTriangle from "@/assets/figma/play-triangle.svg";
 
 export const SectionAbout = () => {
-    return (
-        <section className="about-section-open">
-            <h4>Quem Somos</h4>
-            <div className="container-sections-open">
-                <div className="content-about-open"><p>A Open Soluções Tributárias é uma iniciativa empresarial
-                    cujo objetivo é oferecer uma <b>variedade de produtos</b> que atendem de forma <b>ampla e definitiva</b> os seus clientes.<br /><br />A atuação da Open Soluções
-                    Tributárias vai desde <b>consultoria personalizada</b> até <b>treinamentos </b>(presencial e online), <b>edição de livros</b> (acesse nossa livraria virtual) e <b>desenvolvimento do Sistema Web Gestão Tributária</b>, a ferramenta mais completa do mercado para gerir as obrigações relacionadas às principais retenções tributárias na fonte (INSS, IRRF, CSLL, PIS/Pasep, Cofins e ISS).</p></div>
-                <div className="content-logo-about"><img loading="lazy" alt="image-logo-open" src="./Logo-open.svg" /></div>
-            </div>
-            <div className="video-about-container">
-                <h5>Para um <b>mar de inseguranças</b>, temos uma <b>solução firme</b>.</h5>
-                <video width="100%" controls >
-                    <source
-                        src="https://gtap.com.br/midias/apresentacao.mp4"
-                        type="video/mp4"
-                    />.
-                </video>
-            </div>
-            <div className="text-about-solutions">
-                <p>Não é por outra razão que a Open possui mais de <b>1.000 clientes</b> de todos os Estados brasileiros, dentre os quais há <b>grandes empresas privadas e estatais</b>, além de <b>órgãos públicos de todos os níveis de governo e de todos os Poderes</b> (Executivo, Legislativo e Judiciário) que referendam os serviços desenvolvidos nas diversas vertentes apresentadas. </p>
-                <br />
-                <p>Prazer, somos <b>a Open</b>. 💙 </p>
-            </div>
-        </section>
-    )
-}
+  const revealRef = useReveal({ stagger: 90 });
+  const [playVideo, setPlayVideo] = useState(false);
+
+  return (
+    <section className="open-about on-yellow" ref={revealRef}>
+      <BgWaves tone="navy" />
+      <div className="container open-about__grid">
+        <div className="open-about__text">
+          <h2 className="display open-about__title split" data-reveal>
+            <SplitWords text="Uma solução firme" />
+            <br />
+            <SplitWords text="para um mar de incertezas" start={3} />
+          </h2>
+          <p className="body-lg" data-reveal data-reveal-index="1">
+            A Open oferece uma variedade de produtos que atendem de forma ampla e definitiva os seus clientes: <strong>consultoria personalizada</strong>, <strong>treinamentos</strong> (presenciais e online), <strong>edição de livros</strong> e o <strong>Sistema Web Gestão Tributária</strong> — a ferramenta para gerir as principais retenções na fonte (INSS, IRRF, CSLL, PIS/Pasep, Cofins e ISS).
+          </p>
+          <p className="body-lg" data-reveal data-reveal-index="2">
+            Mais de <strong>1.000 clientes</strong> de todos os estados, entre grandes empresas privadas e estatais e órgãos públicos dos três Poderes, referendam os serviços da Open.
+          </p>
+          <p className="name open-about__sign" data-reveal data-reveal-index="3">Prazer, somos a Open. 💙</p>
+        </div>
+
+        <figure className="open-about__video" data-reveal data-reveal-fx="scale" data-reveal-index="1">
+          {playVideo ? (
+            <video controls autoPlay playsInline>
+              <source src="https://gtap.com.br/midias/apresentacao.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <button type="button" className="open-about__poster" onClick={() => setPlayVideo(true)} aria-label="Assistir à apresentação da Open">
+              <span className="open-about__play" aria-hidden="true"><img src={playTriangle} alt="" /></span>
+              <span className="name">Assista à apresentação</span>
+            </button>
+          )}
+        </figure>
+      </div>
+    </section>
+  );
+};

@@ -1,149 +1,100 @@
-.section-temas {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  
-  background: url("../../../../assets/BackgroundTemas.webp");
-  /* se houver plano de fundo */
-  background-size: cover;
-  padding: 60px 20px;
-  text-align: center;
-  min-height: 90vh;
-}
+/* ===================== Temas (Figma 1920×1479) ===================== */
 
-.section-temas-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  color: white;
-}
-
-.section-temas-content h3 {
-  color: #dda92e;
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.section-temas-content h5 {
-  font-size: 16px;
-  font-weight: 400;
-  color: #fff;
-  margin-bottom: 40px;
-}
-
-.container-cards-tema {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  row-gap: 50px;
-  justify-content: center;
-}
-
-.card-tema {
+.themes {
   position: relative;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 16px;
-  color: #02093a;
-  font-weight: 600;
-  font-size: 21px;
-  text-align: center;
-  width: 250px;
-  height: 265px;
-  /* altura fixa que combine com o SVG */
-  padding: 0px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  white-space: pre-wrap;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  padding-block: clamp(48px, 4.17vw, 80px) clamp(48px, 4.17vw, 80px);
+  overflow: clip;
 }
-
-.card-tema.bgTemas {
-  background-image: url(../../../../assets/bgtemas.svg);
-}
-
-.card-tema.bgTemas2 {
-  background-image: url(../../../../assets/bgtemas2.svg);
-}
-
-.circle-number {
+.themes__watermark {
   position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  border: 4px solid #dda92e;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
+  left: 46.9%;
+  top: 17.7%;
+  width: 54.9%;
+  height: auto;
+  pointer-events: none;
+}
+.themes__inner { position: relative; }
+
+/* Bloco 1: coluna de texto (título + 01–03) | foto (459×623) alinhada ao topo */
+.themes__block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 23.9vw, 459px);
+  column-gap: clamp(32px, 12.1vw, 233px);
+  align-items: start;
+}
+.themes__block--reverse {
+  grid-template-columns: clamp(220px, 23.9vw, 459px) minmax(0, 1fr);
+  column-gap: clamp(32px, 10.6vw, 203px);
+  margin-top: clamp(40px, 3.8vw, 73px);
+}
+.themes__block--reverse .themes__list { padding-top: clamp(24px, 4.5vw, 86px); }
+
+.themes__title {
+  color: #000;
+  margin-bottom: clamp(32px, 3.9vw, 75px);
+}
+
+.themes__list { list-style: none; }
+.theme-row {
+  display: grid;
+  grid-template-columns: clamp(60px, 5.5vw, 106px) 1fr;
   align-items: center;
-  justify-content: center;
+  padding-block: clamp(8px, 0.62vw, 12px);
+  border-top: 1px solid var(--line-on-yellow);
+}
+.themes__list li:first-child { border-top: 0; }
+.theme-row__num { color: var(--color-ink); line-height: 0.9; transition: color 360ms, transform 360ms var(--ease-out); }
+.theme-row__text { color: var(--color-ink); transition: transform 360ms var(--ease-out); }
+@media (hover: hover) {
+  .theme-row:hover .theme-row__num { color: var(--color-navy); transform: translateX(6px); }
+  .theme-row:hover .theme-row__text { transform: translateX(6px); }
 }
 
-.circle-number span {
-  color: #02093a;
-  font-size: 30px;
-  font-weight: 700;
+/* Inclinação de repouso (a rotação ligada ao scroll é aplicada por JS no wrapper) */
+.themes__photo-wrap { will-change: transform; }
+.themes__photo-wrap--a { transform: rotate(-4deg); }
+.themes__photo-wrap--b { transform: rotate(3deg); }
+
+.themes__photo {
+  aspect-ratio: 459 / 623;
+  border-radius: var(--radius-card);
+  perspective: 1000px;           /* palco 3D para o cartão interno */
+  transform-style: preserve-3d;
+}
+.themes__3d {
+  position: relative;
+  width: 100%; height: 100%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-navy);
+  box-shadow: 0 5px 10px rgb(0 0 0 / 10%);
+  transform-style: preserve-3d;
+  transition: transform 700ms var(--ease-out), box-shadow 700ms var(--ease-out);
+  will-change: transform;
+}
+.themes__3d img { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateZ(0); }
+/* brilho que acompanha o cursor */
+.themes__3d::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(60% 60% at var(--gx, 50%) var(--gy, 50%), rgb(255 255 255 / 28%), transparent 70%);
+  opacity: 0;
+  transition: opacity 400ms;
+  pointer-events: none;
+}
+.themes__3d.is-hover { transition: transform 120ms linear, box-shadow 400ms; box-shadow: 0 40px 70px -30px rgb(0 0 0 / 55%); }
+.themes__3d.is-hover::after { opacity: 1; }
+
+@media (max-width: 860px) {
+  .themes__block,
+  .themes__block--reverse { grid-template-columns: 1fr; row-gap: var(--space-8); }
+  .themes__block--reverse .themes__photo { order: 2; }
+  .themes__block--reverse .themes__list { padding-top: 0; }
+  .themes__photo { max-width: 360px; aspect-ratio: 4 / 5; }
+  .themes__watermark { width: 90%; top: 40%; left: 30%; }
 }
 
-.sugerir-tema-btn {
-  color: #02093a;
-  font-size: 20px;
-  font-weight: 500;
-  background: linear-gradient(to right, #dda92e, #ffdf92);
-  border: none;
-  border-radius: 10px;
-  padding-inline: 14px;
-  padding-block: 10px;
-  min-width: 15%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.video-sobre-edition {
-  display: flex;
-  padding-inline: 20%;
-  margin-bottom: 2%;
-}
-
-@media (max-width: 768px) {
-
-  .section-temas-content h3 {
-    font-size: 28px;
-  }
-
-  .section-temas-content h5 {
-    font-size: 14px;
-  }
-
-  .card-tema {
-    font-size: 20px;
-  }
-
-  .circle-number {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    top: -15px;
-    left: 50%;
-  }
-
-  .container-cards-tema {
-  row-gap: 20px;
-}
-
-  .card-tema.bgTemas2 {
-    background-image: url(../../../../assets/bgtemas.svg);
-  }
-
-    .video-sobre-edition {
-      padding: 0;
-    }
-}
-
+/* Contexto de empilhamento para o fundo de palmeiras (BgWaves, z-index -1) */
+.themes { position: relative; isolation: isolate; }

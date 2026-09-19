@@ -1,10 +1,302 @@
-html,
-body {
-  font-family: "Roboto Condensed", sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+/* =============================================================
+   GTAP — Sistema visual (a partir do protótipo Figma "GTAP 2026")
+   Display: Bebas Neue (caixa alta) · Corpo: Roboto Condensed
+   Superfícies: azul #02093A · amarelo #FFC743 · dourado #DDA92E
+   ============================================================= */
+
+:root {
+  /* ---- Cor (tokens do Figma) ---- */
+  --color-navy: #02093a;        /* blue #9 */
+  --color-navy-deep: #010718;
+  --color-yellow: #ffc743;      /* yellow #4 — superfície de conteúdo */
+  --color-gold: #dda92e;        /* yellow #3 — superfície de conversão */
+  --color-gold-light: #ffe098;  /* yellow #6 — bordas */
+  --color-white: #ffffff;
+  --color-off: #f6f6f6;         /* white #4 */
+  --color-ink: #171717;         /* black #1 — texto sobre amarelo */
+
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: rgb(255 255 255 / 78%);
+  --line-on-yellow: rgb(1 7 24 / 20%);
+  --line-on-dark: rgb(255 255 255 / 18%);
+
+  /* ---- Raio (Figma: 40 cards, 80 molduras, pill) ---- */
+  --radius-card: clamp(24px, 2.1vw, 40px);
+  --radius-frame: clamp(32px, 4.2vw, 80px);
+  --radius-pill: 999px;
+
+  /* ---- Espaço ---- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+  --space-32: 128px;
+
+  /* ---- Layout (Figma: margem lateral 156px em 1920) ---- */
+  --gutter: clamp(20px, 8.125vw, 156px);
+  --header-h: clamp(72px, 6.5vw, 124px);
+
+  /* ---- Tipografia (escala proporcional ao frame de 1920) ---- */
+  --font-display: "Bebas Neue", "Roboto Condensed", Impact, sans-serif;
+  --font-sans: "Roboto Condensed", "Arial Narrow", system-ui, sans-serif;
+
+  --fs-display: clamp(3.4rem, 6.67vw, 8rem);   /* 128px */
+  --fs-h2: clamp(2.6rem, 5vw, 6rem);           /* 96px */
+  --fs-name: clamp(2rem, 3.33vw, 4rem);        /* 64px */
+  --fs-lead: clamp(1.25rem, 2.5vw, 3rem);      /* 48px */
+  --fs-body-lg: clamp(1.1rem, 1.67vw, 2rem);   /* 32px */
+  --fs-body: clamp(1rem, 1.04vw, 1.25rem);     /* 20px */
+  --fs-nav: clamp(1rem, 1.67vw, 2rem);         /* 32px */
+
+  /* ---- Movimento ---- */
+  --dur-fast: 160ms;
+  --dur-ui: 240ms;
+  --dur-reveal: 600ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Camadas ---- */
+  --z-header: 20;
+  --z-actions: 30;
+  --z-backdrop: 80;
+  --z-modal: 90;
+  --z-feedback: 100;
+  --z-loading: 200;
 }
+
+/* ---- Aliases de compatibilidade (páginas internas ainda usam estes nomes) ---- */
+:root {
+  --color-deep: var(--color-navy);
+  --color-blue-600: var(--color-navy);
+  --color-blue-300: #8fa0ff;
+  --color-paper: var(--color-off);
+  --color-paper-2: #ececec;
+  --color-body: var(--color-ink);
+  --color-muted: #5c5c5c;
+  --color-gold-deep: #b9821a;
+  --color-gold-soft: var(--color-gold-light);
+  --color-gold-bright: var(--color-yellow);
+  --line-on-light: rgb(1 7 24 / 14%);
+  --line-on-gold: var(--line-on-yellow);
+  --radius-sm: 12px;
+  --radius-media: var(--radius-frame);
+  --radius-control: var(--radius-pill);
+  --shadow-card: 0 5px 10px rgb(0 0 0 / 10%);
+  --shadow-float: 0 18px 50px -18px rgb(0 0 0 / 55%);
+  --fs-h1: var(--fs-display);
+  --fs-h3: clamp(1.4rem, 2.4vw, 2.1rem);
+  --fs-stat: var(--fs-display);
+  --fs-label: 0.85rem;
+  --container: 1320px;
+  --section-space: clamp(64px, 8vw, 128px);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --z-content: 0;
+}
+.btn--primary { --btn-bg: var(--color-yellow); --btn-fg: var(--color-navy); }
+.btn--ghost { --btn-bg: transparent; --btn-fg: var(--color-white); --btn-bd: var(--color-white); }
+.btn--ghost-dark { --btn-bg: transparent; --btn-fg: var(--color-navy); --btn-bd: var(--color-navy); }
+.btn--solid-navy { --btn-bg: var(--color-navy); --btn-fg: var(--color-white); }
+.h1 { font-family: var(--font-display); text-transform: uppercase; font-weight: 400; font-size: var(--fs-display); line-height: 0.95; letter-spacing: -0.02em; }
+.h3 { font-family: var(--font-display); text-transform: uppercase; font-weight: 400; font-size: var(--fs-h3); line-height: 1.05; }
+.lead { font-size: var(--fs-body-lg); line-height: 1.2; letter-spacing: -0.02em; }
+.eyebrow { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase; }
+.text-gold { color: var(--color-yellow); }
+.text-gold-soft { color: var(--color-gold-light); }
+.text-gold-deep { color: var(--color-gold-deep); }
+.surface-navy { background: var(--color-navy); color: var(--color-white); }
+.surface-ink { background: var(--color-navy-deep); color: var(--color-white); }
+.surface-gold { background: var(--color-gold); color: var(--color-white); }
+.surface-paper { background: var(--color-off); color: var(--color-ink); }
+.surface-white { background: var(--color-white); color: var(--color-ink); }
+.container--wide { padding-inline: clamp(20px, 2.1vw, 40px); }
+
+/* ============================ Base ============================ */
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; }
+
+/* Lenis (rolagem suave) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.3;
+  color: var(--color-white);
+  background: var(--color-navy);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
+
+::selection { background: var(--color-yellow); color: var(--color-navy); }
+
+/* ====================== Tipografia util ====================== */
+
+.display,
+.h2,
+.name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+.display { font-size: var(--fs-display); }
+.h2 { font-size: var(--fs-h2); }
+.name { font-size: var(--fs-name); line-height: 1.1; }
+
+.body-lg { font-size: var(--fs-body-lg); line-height: 1.15; letter-spacing: -0.02em; }
+.text-yellow { color: var(--color-yellow); }
+
+/* ====================== Layout ====================== */
+
+.container {
+  width: 100%;
+  padding-inline: var(--gutter);
+}
+.section { position: relative; }
+
+/* ====================== Botões ====================== */
+
+.btn {
+  --btn-bg: var(--color-yellow);
+  --btn-fg: var(--color-navy);
+  --btn-bd: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: clamp(52px, 5vw, 96px);
+  padding: 0 clamp(28px, 3vw, 56px);
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 2px solid var(--btn-bd);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.46vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  cursor: pointer;
+  text-align: center;
+  transition: transform var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out),
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
+}
+.btn--yellow { --btn-bg: var(--color-yellow); --btn-fg: var(--color-navy); }
+.btn--navy { --btn-bg: var(--color-navy); --btn-fg: var(--color-white); }
+.btn--outline { --btn-bg: transparent; --btn-fg: var(--color-white); --btn-bd: var(--color-white); }
+/* Hover padrão, leve e fluido: sobe 2 px, cor clareia um pouco, sombra suave.
+   Mesma curva e duração em todos os botões; sem escala, sem brilho. */
+.btn {
+  position: relative;
+  transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out),
+    background-color 300ms var(--ease-out), color 300ms var(--ease-out), border-color 300ms var(--ease-out);
+}
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -14px rgb(0 0 0 / 40%); }
+  .btn--yellow:hover { background: #ffd166; }
+  .btn--navy:hover { background: #0a1560; }
+  .btn--outline:hover { background: rgb(255 255 255 / 10%); }
+}
+.btn:active { transform: translateY(0); box-shadow: none; transition-duration: 120ms; }
+
+/* Fundo único de página (subpáginas): azul + vídeo fixo atrás de todo o conteúdo */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-navy);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ====================== Foco ====================== */
+
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.on-yellow :focus-visible { outline-color: var(--color-navy); }
+
+/* ====================== Revelação ====================== */
+
+/* Visível por padrão. .reveal-init só existe enquanto o elemento está fora da tela. */
+[data-reveal].reveal-init { opacity: 0; transform: translateY(28px); }
+[data-reveal].is-visible {
+  animation: reveal-in 760ms var(--ease-out) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal][data-reveal-fx="scale"].is-visible { animation-name: reveal-scale; }
+[data-reveal][data-reveal-fx="tilt"].is-visible { animation-name: reveal-tilt; animation-duration: 900ms; }
+[data-reveal][data-reveal-fx="tilt-r"].is-visible { animation-name: reveal-tilt-r; animation-duration: 900ms; }
+
+/* Foto entrando com "wipe" (clip-path) */
+[data-reveal][data-reveal-fx="wipe"].is-visible { animation-name: reveal-wipe; animation-duration: 1100ms; }
+@keyframes reveal-wipe {
+  from { opacity: 1; clip-path: inset(0 100% 0 0 round var(--radius-card)); transform: none; }
+  to { opacity: 1; clip-path: inset(0 0 0 0 round var(--radius-card)); transform: none; }
+}
+
+/* Títulos palavra a palavra (SplitWords) */
+.split.is-visible { animation: none; }
+.split .w {
+  display: inline-block; overflow: hidden; vertical-align: bottom;
+  padding: 0.16em 0.02em 0.08em; margin: -0.16em -0.02em -0.08em; /* espaço para acentos e descendentes */
+}
+.split .w__in { display: inline-block; transform: translateY(110%); }
+.split.is-visible .w__in,
+.is-visible .split .w__in {
+  animation: word-up 900ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms + var(--reveal-delay, 0ms));
+}
+@keyframes word-up { from { transform: translateY(110%); } to { transform: none; } }
+.reveal-init.split { opacity: 1; transform: none; }
+
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes reveal-scale {
+  from { opacity: 0; transform: scale(0.96) translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes reveal-tilt {
+  from { opacity: 0; transform: rotate(-4deg) translateY(32px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes reveal-tilt-r {
+  from { opacity: 0; transform: rotate(4deg) translateY(32px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal].reveal-init { opacity: 1; transform: none; }
+}
+
+/* ====================== Utilidades ====================== */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; top: -100px; left: 16px;
+  z-index: var(--z-feedback);
+  background: var(--color-yellow); color: var(--color-navy);
+  padding: 12px 20px; border-radius: 0 0 12px 12px; font-weight: 600;
+  transition: top var(--dur-ui) var(--ease-out);
+}
+.skip-link:focus { top: 0; }
+.no-scroll { overflow: hidden; }
