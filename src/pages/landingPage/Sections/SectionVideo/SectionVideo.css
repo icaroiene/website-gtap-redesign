@@ -21,11 +21,8 @@
 }
 .video__player { background: #000; }
 /* Vídeo ambiente só aparece quando está realmente rodando; senão fica a foto */
-.video__ambient {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity 900ms var(--ease-out);
-}
-.video__ambient.is-playing { opacity: 1; }
+/* Ambiente (AmbientVideo): cobre a moldura sobre o pôster; o fade é do próprio componente */
+.video__ambient { position: absolute; inset: 0; }
 
 .video__title {
   position: absolute;

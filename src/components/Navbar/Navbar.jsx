@@ -119,7 +119,7 @@ export const Navbar = ({ solid = false }) => {
 
       {/* Barra flutuante (aparece ao sair do hero) */}
       {!solid && (
-        <div className={`floatbar${pastHero && !atFooter ? " is-visible" : ""}`} aria-hidden={!(pastHero && !atFooter)}>
+        <div className={`floatbar${pastHero && !atFooter ? " is-visible" : ""}`} inert={!(pastHero && !atFooter)}>
           <Link className="floatbar__brand" to="/" aria-label="GTAP — início">
             <img src="/logo.svg" alt="" />
           </Link>

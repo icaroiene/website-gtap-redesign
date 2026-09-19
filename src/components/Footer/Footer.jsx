@@ -23,7 +23,7 @@ export const Footer = () => {
   return (
     <footer className="site-footer">
       {/* Textura de água (reflexos) sobreposta ao azul, em todas as páginas */}
-      <AmbientVideo src={AMBIENT.agua} poster={AMBIENT.aguaPoster} className="ambient--water" />
+      <AmbientVideo src={AMBIENT.agua} poster={AMBIENT.aguaPoster} className="ambient--water" mobile={false} />
 
       <div className="container site-footer__inner">
         <div className="site-footer__org">

@@ -137,6 +137,17 @@
 > 720 px, 19–25 KB cada) em `public/posters/depoimentos/{29,30,68,69,70}.webp`; a captura por vídeo
 > fica só como fallback para depoimentos novos sem pôster. Para regenerar: mesmo comando sobre o
 > `mediaUrl` de cada item `type: 3` do `landing_page.json`.
+>
+> **Revisão 2.17 (19/09/2026) — fechamento:** "A Open" aponta para o site oficial (nova aba; rota
+> antiga redireciona; logo do rodapé linkado). Checkpoint em branch `redesign-2026`. **404** no
+> padrão das subpáginas (header transparente, fundo único, "404" em marca d'água). **Peso**: seção
+> Vídeo passa a usar `AmbientVideo` — o `banner-gt-abertura.mp4` remoto tem **122 MB / 2560×1440 /
+> 18,5 Mbps** e rodava em loop também no mobile; agora só desktop, perto da tela, com pausa fora.
+> Rodapé sem vídeo no mobile (só pôster). Medido: mobile 0,03 MB até a seção Vídeo (antes ≥2,5 MB
+> só de rodapé + streaming do hero); desktop ≈6 MB de vídeo em toda a home. **Lighthouse mobile**:
+> Acessibilidade 96 → corrigido `aria-hidden` com focáveis (floatbar usa `inert`); Boas práticas
+> 100; SEO 92 → adicionado `public/robots.txt`. Recomendação aberta: transcodificar o vídeo do hero
+> para um loop local ~2 MB (exige ler o arquivo de 122 MB do gtap.com.br).
 
 _Implementação executada e verificada em 18/09/2026. Stack mantida: React 19 + Vite 6 + React Router 7 (JS)._
 
