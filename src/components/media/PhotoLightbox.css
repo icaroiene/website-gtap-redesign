@@ -112,3 +112,12 @@
   .lightbox__backdrop,
   .lightbox__figure img { animation: none; }
 }
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  .lightbox__panel { width: 100%; height: calc(100dvh - 40px); }
+  .lightbox__figure img { max-height: calc(100dvh - 180px); }
+  .lightbox__nav { top: auto; bottom: 8px; translate: none; width: 48px; height: 48px; }
+  .lightbox__counter { bottom: 24px; }
+}

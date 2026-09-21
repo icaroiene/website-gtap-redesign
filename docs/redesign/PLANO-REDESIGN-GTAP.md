@@ -776,3 +776,11 @@ Esse pacote comprova a direção antes de multiplicar componentes. Depois dele, 
 - Skill aplicada ao planejamento: [frontend-design-direction](/Users/icaroisd/.codex/plugins/cache/ecc/ecc/2.2.1/skills/frontend-design-direction/SKILL.md). Este caminho é local à máquina de elaboração; as regras necessárias já estão traduzidas no documento.
 
 Atualizar este plano quando mudar identidade, conteúdo comercial, ordem das seções ou contrato de integração. Registrar diferenças aprovadas; manter as decisões visuais junto do código para que próximas implementações não retornem a uma interpretação genérica da referência.
+
+### Ajuste aprovado de direção — 21/09/2026
+
+A pedido do usuário, superfícies amarelas de Temas, Ingressos e Contato passam a creme `#fff4d8`; amarelo saturado permanece nos CTAs. Header fixo recebe vidro azul translúcido com blur e filete claro. Escala fluida limitada ao equivalente de 1440px, conteúdo central de 1206px e molduras de mídia até 1380px, mantendo fundos de ponta a ponta e sem aplicar zoom CSS. Contato simplificado para “Dúvidas sobre o GTAP? Fale com nossa equipe.”.
+
+### Revisão mobile — 21/09/2026
+
+Ajustes de layout restritos a até 720px: margens de 20px, título do hero balanceado, data em linha própria, fotos dos temas intercaladas com a lista, grade de palestrantes em duas colunas, controles de depoimentos abaixo do título, mapa no fluxo da moldura, formulário compacto e galerias em duas colunas. Desktop mantém os estilos anteriores. Menu ganha fechamento explícito e restauração de foco sem salto de rolagem; barra de conversão fica oculta durante foco no formulário mobile.

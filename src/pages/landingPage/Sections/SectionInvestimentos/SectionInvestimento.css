@@ -1,32 +1,32 @@
 /* ===================== Ingressos (Figma) ===================== */
 
 .tickets {
-  background: var(--color-gold);
+  background: var(--color-cream);
   color: var(--color-white);
-  padding-block: clamp(56px, 4.2vw, 80px) clamp(64px, 5.5vw, 110px);
+  padding-block: clamp(56px, calc(var(--layout-unit) * 4.2), 80px) clamp(64px, calc(var(--layout-unit) * 5.5), 110px);
   overflow: clip;
 }
-.tickets__head { text-align: center; margin-bottom: clamp(40px, 4.8vw, 92px); }
+.tickets__head { text-align: center; margin-bottom: clamp(40px, calc(var(--layout-unit) * 4.8), 92px); }
 .tickets__pre {
   color: var(--color-navy);
   font-size: var(--fs-lead);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
-.tickets__title { color: var(--color-white); }
+.tickets__title { color: var(--color-navy); }
 
 .tickets__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 746px));
   justify-content: center;
-  gap: clamp(20px, 1.9vw, 36px);
+  gap: clamp(20px, calc(var(--layout-unit) * 1.9), 36px);
 }
 
 .ticket {
   position: relative;
   aspect-ratio: 1 / 1;
   border-radius: var(--radius-frame);
-  padding: clamp(32px, 4vw, 80px) clamp(24px, 3vw, 60px);
+  padding: clamp(32px, calc(var(--layout-unit) * 4), 80px) clamp(24px, calc(var(--layout-unit) * 3), 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,9 +39,11 @@
 }
 .ticket--individual { background: var(--color-navy); }
 .ticket--group {
-  background: var(--color-gold);
-  border: 2px solid var(--color-gold-light);
+  background: var(--color-white);
+  border: 2px solid rgb(2 9 58 / 16%);
+  color: var(--color-navy);
 }
+.ticket--group .ticket__title { color: var(--color-navy); }
 .ticket__watermark {
   position: absolute;
   inset: 8% -9% 8% -9%;
@@ -52,8 +54,8 @@
 .ticket__title {
   position: relative;
   color: var(--color-white);
-  margin-top: clamp(8px, 2vw, 48px);
-  margin-bottom: clamp(20px, 2vw, 40px);
+  margin-top: clamp(8px, calc(var(--layout-unit) * 2), 48px);
+  margin-bottom: clamp(20px, calc(var(--layout-unit) * 2), 40px);
 }
 .ticket__text {
   position: relative;
@@ -65,16 +67,16 @@
 }
 .ticket__price {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 4.2vw, 5rem);
+  font-size: clamp(2.6rem, calc(var(--layout-unit) * 4.2), 5rem);
   line-height: 1;
   letter-spacing: -0.02em;
-  margin-bottom: clamp(8px, 0.8vw, 16px);
+  margin-bottom: clamp(8px, calc(var(--layout-unit) * 0.8), 16px);
 }
 .ticket__window { opacity: 0.85; font-size: var(--fs-body); }
 .ticket__btn {
   position: relative;
   width: min(100%, 495px);
-  margin-top: clamp(16px, 2vw, 40px);
+  margin-top: clamp(16px, calc(var(--layout-unit) * 2), 40px);
 }
 
 @media (max-width: 900px) {

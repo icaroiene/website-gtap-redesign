@@ -219,3 +219,16 @@ Fidelidade de composição buscada e atingida: primeira dobra memorável com let
 - **Deps a podar:** `react-slick`, `slick-carousel`, `animate.css` não têm mais consumidores — remover de `package.json` numa limpeza dedicada (lockfile).
 - **SEO por rota:** títulos por rota implementados via `document.title`; meta/OG por rota e prerender para social ficam como decisão separada (SPA).
 - **Host/refresh:** validar refresh de rotas profundas e redirects no host real (Apache/Netlify) — Vite dev não valida isso.
+
+## Refinamento de superfícies e escala — 21/09/2026
+
+- Header com vidro azul, blur de 22px, filete e contraste permanente.
+- Temas, Ingressos e Contato em creme #fff4d8; contraste azul no ingresso em grupo.
+- Texto do contato encurtado, sem quebras manuais.
+- Medidas fluidas limitadas ao equivalente de 1440px; conteúdo central de 1206px e molduras até 1380px. Sem zoom CSS.
+- Revisão visual: header, contato e ingressos em 1920×1080; ingressos e Temas em 390×844. Largura sem overflow em 390 e 2560px. Título principal medido em 96px tanto em 1920 quanto em 2560px.
+- ESLint, build Vite e git diff --check aprovados. Nenhum envio de formulário ou publicação.
+
+## Revisão mobile — 21/09/2026
+
+Revisados visualmente: hero inicial, temas, depoimentos, localização e formulário em 390×844; galeria, álbum, lightbox e menu em 320×740. Sem overflow horizontal nesses tamanhos. Foco no campo Nome oculta a barra flutuante. Navegação de foto avança de 1/28 para 2/28; menu fecha e devolve foco ao acionador. Build, lint e diff --check aprovados. Teclado virtual físico não foi emulado; comportamento de foco verificado no navegador. Nenhum formulário enviado.

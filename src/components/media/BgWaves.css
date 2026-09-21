@@ -41,7 +41,7 @@
    (≈40% da largura do SVG) varrem o quadro a partir dali. */
 .bgw__crown {
   position: absolute;
-  width: clamp(1100px, 120vw, 2200px);
+  width: clamp(1100px, calc(var(--layout-unit) * 120), 2200px);
   aspect-ratio: 1;
   overflow: visible;
 }

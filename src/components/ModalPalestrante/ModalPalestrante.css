@@ -80,7 +80,7 @@
 }
 
 .bio-modal__content {
-  padding: clamp(24px, 3vw, 44px);
+  padding: clamp(24px, calc(var(--layout-unit) * 3), 44px);
   overflow-y: auto;
   color: var(--color-body);
 }

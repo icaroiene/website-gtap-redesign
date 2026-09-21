@@ -20,7 +20,7 @@
 /* Caixa do logo: 41.46% × (23.14% de 1080) do frame 1920×1080 */
 .loading__logo {
   position: relative;
-  width: clamp(240px, 41.46vw, 796px);
+  width: clamp(240px, calc(var(--layout-unit) * 41.46), 796px);
   aspect-ratio: 796 / 250;
   transition: transform 900ms cubic-bezier(0.76, 0, 0.24, 1), opacity 500ms ease;
 }

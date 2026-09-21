@@ -3,8 +3,8 @@
 .venue {
   background: var(--color-navy);
   color: var(--color-white);
-  padding: clamp(16px, 2.08vw, 40px);
-  padding-bottom: clamp(48px, 4.2vw, 80px);
+  padding: clamp(16px, calc(var(--layout-unit) * 2.08), 40px);
+  padding-bottom: clamp(48px, calc(var(--layout-unit) * 4.2), 80px);
 }
 .venue__frame {
   position: relative;
@@ -29,13 +29,13 @@
 .venue__title {
   position: absolute;
   z-index: 2;
-  right: clamp(20px, 3.3vw, 64px);
-  bottom: clamp(20px, 3.5vw, 64px);
+  right: clamp(20px, calc(var(--layout-unit) * 3.3), 64px);
+  bottom: clamp(20px, calc(var(--layout-unit) * 3.5), 64px);
   margin: 0;
   color: var(--color-white);
   text-align: right;
   line-height: 0.86;
-  font-size: clamp(3rem, 7.5vw, 9rem);
+  font-size: clamp(3rem, calc(var(--layout-unit) * 7.5), 9rem);
   text-shadow: 0 6px 40px rgb(0 0 0 / 45%);
 }
 
@@ -43,9 +43,9 @@
 .venue__mapcard {
   position: absolute;
   z-index: 2;
-  left: clamp(16px, 2.5vw, 48px);
-  bottom: clamp(16px, 2.5vw, 48px);
-  width: clamp(220px, 27vw, 520px);
+  left: clamp(16px, calc(var(--layout-unit) * 2.5), 48px);
+  bottom: clamp(16px, calc(var(--layout-unit) * 2.5), 48px);
+  width: clamp(220px, calc(var(--layout-unit) * 27), 520px);
   aspect-ratio: 4 / 3;
   border-radius: var(--radius-card);
   overflow: hidden;
@@ -60,7 +60,7 @@
   padding: 10px 14px;
   background: rgb(2 9 58 / 82%);
   color: var(--color-white);
-  font-size: clamp(0.85rem, 0.95vw, 1.1rem);
+  font-size: clamp(0.85rem, calc(var(--layout-unit) * 0.95), 1.1rem);
   letter-spacing: -0.01em;
   pointer-events: none;
 }
@@ -69,14 +69,14 @@
 /* Pílula de informação + único botão */
 .venue__meta {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: clamp(16px, 1.5vw, 28px);
-  margin-top: clamp(32px, 3.3vw, 64px);
+  gap: clamp(16px, calc(var(--layout-unit) * 1.5), 28px);
+  margin-top: clamp(32px, calc(var(--layout-unit) * 3.3), 64px);
 }
 .venue__pill {
   font-weight: 600;
   font-size: var(--fs-nav);
   letter-spacing: 0.08em;
-  padding: clamp(12px, 1.3vw, 25px) clamp(24px, 3vw, 58px);
+  padding: clamp(12px, calc(var(--layout-unit) * 1.3), 25px) clamp(24px, calc(var(--layout-unit) * 3), 58px);
   border: 2px solid rgb(255 255 255 / 70%);
   border-radius: var(--radius-pill);
   text-align: center;
@@ -84,7 +84,7 @@
 
 @media (max-width: 860px) {
   .venue__frame { aspect-ratio: 4 / 5; }
-  .venue__title { right: 16px; bottom: clamp(220px, 46vw, 300px); font-size: 2.8rem; }
+  .venue__title { right: 16px; bottom: clamp(220px, calc(var(--layout-unit) * 46), 300px); font-size: 2.8rem; }
   .venue__mapcard { left: 16px; right: 16px; bottom: 16px; width: auto; aspect-ratio: 16 / 10; }
   .venue__pill { font-size: 0.95rem; letter-spacing: 0.05em; }
 }
@@ -96,26 +96,26 @@
 }
 
 /* ===== Pontos turísticos: três fotos reais de Salvador, levemente inclinadas ===== */
-.venue__spots-wrap { margin-top: clamp(56px, 5.5vw, 104px); }
+.venue__spots-wrap { margin-top: clamp(56px, calc(var(--layout-unit) * 5.5), 104px); }
 .venue__spots-title {
   font-family: var(--font-display);
   text-transform: uppercase;
-  font-size: clamp(1.8rem, 3vw, 3.4rem);
+  font-size: clamp(1.8rem, calc(var(--layout-unit) * 3), 3.4rem);
   text-align: center;
   color: var(--color-white);
-  margin-bottom: clamp(28px, 3.2vw, 60px);
+  margin-bottom: clamp(28px, calc(var(--layout-unit) * 3.2), 60px);
 }
 .venue__spots-title em { font-style: normal; color: var(--color-yellow); }
 .venue__spots {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 56px);
+  gap: clamp(20px, calc(var(--layout-unit) * 3), 56px);
   align-items: start;
 }
 .venue__spot { --rot: 0deg; transform: rotate(var(--rot)); transition: transform 600ms var(--ease-out); }
 .venue__spot:nth-child(1) { --rot: -3deg; }
-.venue__spot:nth-child(2) { --rot: 2deg; margin-top: clamp(24px, 3vw, 56px); }
+.venue__spot:nth-child(2) { --rot: 2deg; margin-top: clamp(24px, calc(var(--layout-unit) * 3), 56px); }
 .venue__spot:nth-child(3) { --rot: -2deg; }
 .venue__spot-fig {
   margin: 0;
@@ -127,7 +127,7 @@
 }
 .venue__spot-fig { position: relative; }
 .venue__spot-video { transition: transform 1200ms var(--ease-out); }
-.venue__spot-name { color: var(--color-white); margin-top: clamp(14px, 1.4vw, 24px); transition: color 360ms; }
+.venue__spot-name { color: var(--color-white); margin-top: clamp(14px, calc(var(--layout-unit) * 1.4), 24px); transition: color 360ms; }
 .venue__spot-note { color: var(--color-white); opacity: 0.8; font-size: var(--fs-body); margin-top: 4px; }
 @media (hover: hover) {
   .venue__spot:hover { transform: rotate(0deg) translateY(-8px); }
@@ -138,4 +138,23 @@
   .venue__spots { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding: 8px 4px 16px; scrollbar-width: none; }
   .venue__spots::-webkit-scrollbar { display: none; }
   .venue__spots .venue__spot { flex: 0 0 72vw; scroll-snap-align: start; margin-top: 0; --rot: 0deg; }
+}
+
+@media (min-width: 1440px) {
+  .venue__frame { max-width: 1380px; margin-inline: auto; }
+}
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  .venue { padding: 24px 12px 48px; }
+  .venue__frame { display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; padding: 24px 16px 16px; min-height: 510px; aspect-ratio: auto; }
+  .venue__title { position: relative; inset: auto; font-size: clamp(2.8rem, 11vw, 3.6rem); text-align: left; line-height: 0.98; }
+  .venue__mapcard { position: relative; inset: auto; width: 100%; height: 190px; aspect-ratio: auto; flex-shrink: 0; border-radius: 20px; }
+  .venue__meta { margin: 24px 8px 0; align-items: stretch; flex-direction: column; }
+  .venue__pill { border: 0; padding: 0; font-weight: 400; letter-spacing: 0; font-size: 1rem; line-height: 1.5; }
+  .venue__spots-wrap.container { padding-inline: 8px; }
+  .venue__spots .venue__spot { flex-basis: min(76vw, 320px); }
+  .venue__spot-fig { aspect-ratio: 4 / 5; }
+  .venue__spot-name { font-size: 1.75rem; }
 }

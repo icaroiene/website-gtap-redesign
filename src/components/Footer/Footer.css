@@ -19,18 +19,18 @@
 .site-footer__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) auto;
-  gap: clamp(32px, 6vw, 128px);
-  padding-block: clamp(56px, 5.2vw, 100px) clamp(56px, 5.2vw, 100px);
+  gap: clamp(32px, calc(var(--layout-unit) * 6), 128px);
+  padding-block: clamp(56px, calc(var(--layout-unit) * 5.2), 100px) clamp(56px, calc(var(--layout-unit) * 5.2), 100px);
   font-size: var(--fs-body);
   line-height: 1.3;
 }
 
-.site-footer__label { margin-bottom: clamp(16px, 1.25vw, 24px); }
+.site-footer__label { margin-bottom: clamp(16px, calc(var(--layout-unit) * 1.25), 24px); }
 .site-footer__open {
-  width: clamp(180px, 13.5vw, 260px);
+  width: clamp(180px, calc(var(--layout-unit) * 13.5), 260px);
   height: auto;
   filter: brightness(0) invert(1);
-  margin-bottom: clamp(24px, 2.4vw, 46px);
+  margin-bottom: clamp(24px, calc(var(--layout-unit) * 2.4), 46px);
 }
 .site-footer__addr { font-style: normal; max-width: 30ch; }
 
@@ -39,10 +39,10 @@
 
 .site-footer__nav-title {
   font-weight: 600;
-  font-size: clamp(1.15rem, 1.25vw, 1.5rem);
-  margin-bottom: clamp(20px, 1.4vw, 26px);
+  font-size: clamp(1.15rem, calc(var(--layout-unit) * 1.25), 1.5rem);
+  margin-bottom: clamp(20px, calc(var(--layout-unit) * 1.4), 26px);
 }
-.site-footer__nav ul { display: flex; flex-direction: column; gap: clamp(14px, 1.04vw, 20px); }
+.site-footer__nav ul { display: flex; flex-direction: column; gap: clamp(14px, calc(var(--layout-unit) * 1.04), 20px); }
 .site-footer__nav a { color: var(--color-white); transition: color var(--dur-fast); }
 @media (hover: hover) { .site-footer__nav a:hover { color: var(--color-yellow); } }
 
@@ -58,3 +58,12 @@
   transition: transform 360ms var(--ease-out);
 }
 @media (hover: hover) { .site-footer__nav a:hover::after { transform: scaleX(1); transform-origin: left; } }
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  .site-footer__inner { padding-block: 48px 32px; gap: 32px; }
+  .site-footer__nav ul { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 20px; }
+  .site-footer__nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-footer__text { line-height: 1.5; }
+}

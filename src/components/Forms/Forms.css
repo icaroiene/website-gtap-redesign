@@ -1,18 +1,18 @@
 /* ====================== Formulário (card branco sobre amarelo) ====================== */
 
-.lead-form { display: flex; flex-direction: column; gap: clamp(16px, 1.4vw, 26px); }
+.lead-form { display: flex; flex-direction: column; gap: clamp(16px, calc(var(--layout-unit) * 1.4), 26px); }
 
 .lead-form__field { display: flex; flex-direction: column; gap: 8px; }
 .lead-form__field label {
   font-family: var(--font-display);
   text-transform: uppercase;
-  font-size: clamp(1.15rem, 1.4vw, 1.7rem);
+  font-size: clamp(1.15rem, calc(var(--layout-unit) * 1.4), 1.7rem);
   letter-spacing: 0.02em;
   color: var(--color-navy);
 }
 .lead-form__field input {
-  height: clamp(54px, 4.2vw, 80px);
-  padding: 0 clamp(20px, 1.8vw, 34px);
+  height: clamp(54px, calc(var(--layout-unit) * 4.2), 80px);
+  padding: 0 clamp(20px, calc(var(--layout-unit) * 1.8), 34px);
   border-radius: var(--radius-pill);
   border: 2px solid rgb(2 9 58 / 22%);
   background: var(--color-off);
@@ -30,7 +30,7 @@
 }
 .lead-form__field input:user-invalid { border-color: #d9463a; }
 
-.lead-form__submit { width: 100%; margin-top: clamp(8px, 0.8vw, 16px); }
+.lead-form__submit { width: 100%; margin-top: clamp(8px, calc(var(--layout-unit) * 0.8), 16px); }
 .lead-form__submit:disabled { opacity: 0.7; cursor: progress; }
 
 .lead-form__feedback { margin: 0; font-size: var(--fs-body); }

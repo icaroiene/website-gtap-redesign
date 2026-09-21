@@ -1,33 +1,33 @@
 /* ===================== Contato (padrão Temas/Ingressos) ===================== */
 
 .contact {
-  background: var(--color-yellow);
+  background: var(--color-cream);
   color: var(--color-ink);
-  padding-block: clamp(56px, 4.2vw, 80px) clamp(64px, 5vw, 96px);
+  padding-block: clamp(56px, calc(var(--layout-unit) * 4.2), 80px) clamp(64px, calc(var(--layout-unit) * 5), 96px);
   overflow: clip;
 }
 .contact__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(32px, 5vw, 96px);
+  gap: clamp(32px, calc(var(--layout-unit) * 5), 96px);
   align-items: center;
 }
 .contact__card { max-width: 746px; justify-self: end; width: 100%; }
-.contact__title { color: #000; margin-bottom: clamp(20px, 2vw, 40px); }
-.contact__text { color: var(--color-ink); max-width: 30ch; margin-bottom: clamp(28px, 3vw, 56px); }
+.contact__title { color: #000; margin-bottom: clamp(20px, calc(var(--layout-unit) * 2), 40px); }
+.contact__text { color: var(--color-ink); max-width: 38ch; text-wrap: pretty; margin-bottom: clamp(28px, calc(var(--layout-unit) * 3), 56px); }
 
 .contact__facts { display: flex; flex-direction: column; }
 .contact__facts div {
   display: grid;
-  grid-template-columns: clamp(90px, 8vw, 150px) 1fr;
+  grid-template-columns: clamp(90px, calc(var(--layout-unit) * 8), 150px) 1fr;
   align-items: baseline;
-  padding-block: clamp(14px, 1.2vw, 22px);
+  padding-block: clamp(14px, calc(var(--layout-unit) * 1.2), 22px);
   border-top: 1px solid var(--line-on-yellow);
 }
 .contact__facts dt {
   font-family: var(--font-display);
   text-transform: uppercase;
-  font-size: clamp(1.5rem, 2.5vw, 3rem);
+  font-size: clamp(1.5rem, calc(var(--layout-unit) * 2.5), 3rem);
   line-height: 1;
   color: var(--color-ink);
 }
@@ -37,7 +37,7 @@
   background: var(--color-white);
   color: var(--color-navy);
   border-radius: var(--radius-frame);
-  padding: clamp(28px, 3.6vw, 70px);
+  padding: clamp(28px, calc(var(--layout-unit) * 3.6), 70px);
   box-shadow: 0 40px 80px -40px rgb(2 9 58 / 45%), 0 5px 10px rgb(0 0 0 / 8%);
 }
 
@@ -48,3 +48,17 @@
 
 /* Contexto de empilhamento para o fundo de palmeiras (BgWaves, z-index -1) */
 .contact { position: relative; isolation: isolate; }
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  .contact__grid { gap: 28px; }
+  .contact__title { margin-bottom: 16px; }
+  .contact__text { margin-bottom: 24px; font-size: 1.125rem; }
+  .contact__facts div { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding-block: 16px; }
+  .contact__facts dt { font-size: 1.5rem; }
+  .contact__facts dd { font-size: 1rem; line-height: 1.4; }
+  .contact__card { padding: 24px 20px; border-radius: 24px; box-shadow: 0 16px 36px -24px rgb(2 9 58 / 32%); }
+  .lead-form__field input { min-width: 0; width: 100%; font-size: 1rem; }
+  .lead-form__alt { line-height: 1.6; }
+}

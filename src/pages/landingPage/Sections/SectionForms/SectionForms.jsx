@@ -4,8 +4,7 @@ import { useReveal } from "../../../../hooks/useReveal";
 import { BgWaves } from "../../../../components/media/BgWaves";
 import "./SectionForms.css";
 
-// Contato no padrão Temas/Ingressos: amarelo, título Bebas preto, filetes,
-// e o formulário dentro de um card azul r80 com botão amarelo.
+// Contato: superfície creme, título da família display e formulário branco.
 export const SectionForms = () => {
   const revealRef = useReveal({ stagger: 100 });
 
@@ -16,7 +15,7 @@ export const SectionForms = () => {
         <div className="contact__intro">
           <h2 className="display contact__title" data-reveal>Fale com a gente</h2>
           <p className="body-lg contact__text" data-reveal data-reveal-index="1">
-            Dúvidas sobre inscrição, condições para grupos e participação de órgãos? Deixe seus dados e a nossa equipe retorna o contato.
+            Dúvidas sobre o GTAP? Fale com nossa equipe.
           </p>
           <dl className="contact__facts" data-reveal data-reveal-index="2">
             <div>

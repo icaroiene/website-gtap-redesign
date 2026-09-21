@@ -5,12 +5,12 @@
 .album { position: relative; color: var(--color-white); }
 .album__head {
   position: relative;
-  padding-top: calc(var(--header-h) + clamp(32px, 3.4vw, 64px));
-  padding-bottom: clamp(40px, 4vw, 72px);
+  padding-top: calc(var(--header-h) + clamp(32px, calc(var(--layout-unit) * 3.4), 64px));
+  padding-bottom: clamp(40px, calc(var(--layout-unit) * 4), 72px);
 }
 .album__topbar {
   display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-  margin-bottom: clamp(32px, 3.4vw, 64px);
+  margin-bottom: clamp(32px, calc(var(--layout-unit) * 3.4), 64px);
 }
 .album__back {
   display: inline-flex; align-items: center; gap: 8px;
@@ -26,7 +26,7 @@
 
 /* Troca de edição (‹ IX GTAP ›) */
 .album__switch { display: inline-flex; align-items: center; gap: 12px; }
-.album__switch-label { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(1.2rem, 1.4vw, 1.7rem); letter-spacing: 0.02em; min-width: 6ch; text-align: center; }
+.album__switch-label { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(1.2rem, calc(var(--layout-unit) * 1.4), 1.7rem); letter-spacing: 0.02em; min-width: 6ch; text-align: center; }
 .album__switch-btn {
   width: 44px; height: 44px; border-radius: 50%;
   display: grid; place-items: center;
@@ -38,17 +38,17 @@
 .album__switch-btn.is-disabled { opacity: 0.3; }
 @media (hover: hover) { a.album__switch-btn:hover { background: var(--color-yellow); color: var(--color-navy); border-color: var(--color-yellow); transform: translateY(-2px); } }
 
-.album__head-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: clamp(24px, 4vw, 80px); }
-.album__logo { height: clamp(80px, 9vw, 150px); width: auto; margin-bottom: clamp(20px, 2vw, 40px); }
+.album__head-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: clamp(24px, calc(var(--layout-unit) * 4), 80px); }
+.album__logo { height: clamp(80px, calc(var(--layout-unit) * 9), 150px); width: auto; margin-bottom: clamp(20px, calc(var(--layout-unit) * 2), 40px); }
 .album__lead { font-size: var(--fs-body-lg); letter-spacing: -0.02em; max-width: 44ch; }
 .album__count { display: flex; flex-direction: column; align-items: flex-end; min-height: 1em; }
-.album__count-num { font-size: clamp(3.5rem, 6vw, 7rem); line-height: 0.9; color: var(--color-yellow); }
+.album__count-num { font-size: clamp(3.5rem, calc(var(--layout-unit) * 6), 7rem); line-height: 0.9; color: var(--color-yellow); }
 .album__count-label { font-size: var(--fs-body); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; margin-top: 6px; }
 
 /* Corpo */
 .album__body {
   position: relative;
-  padding-block: 0 clamp(72px, 6vw, 120px);
+  padding-block: 0 clamp(72px, calc(var(--layout-unit) * 6), 120px);
 }
 
 /* Mosaico: 3 colunas; a 1ª foto de cada bloco de 6 ocupa 2×2 */
@@ -57,7 +57,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-auto-rows: minmax(0, auto);
   grid-auto-flow: dense;
-  gap: clamp(12px, 1.4vw, 28px);
+  gap: clamp(12px, calc(var(--layout-unit) * 1.4), 28px);
   list-style: none;
 }
 .album__grid > li:nth-child(6n + 1):not(:last-child) { grid-column: span 2; grid-row: span 2; }
@@ -99,12 +99,12 @@
 
 /* Navegação entre edições no fim */
 .album__nav {
-  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 1.8vw, 32px);
-  margin-top: clamp(48px, 5vw, 96px);
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, calc(var(--layout-unit) * 1.8), 32px);
+  margin-top: clamp(48px, calc(var(--layout-unit) * 5), 96px);
 }
 .album__nav-card {
   position: relative; display: flex; align-items: flex-end;
-  min-height: clamp(160px, 16vw, 260px);
+  min-height: clamp(160px, calc(var(--layout-unit) * 16), 260px);
   border-radius: var(--radius-card); overflow: hidden;
   background: rgb(255 255 255 / 5%); border: 1px solid rgb(255 255 255 / 12%); color: var(--color-white);
   transition: transform 500ms var(--ease-out), box-shadow 500ms var(--ease-out), border-color 500ms var(--ease-out);
@@ -114,9 +114,9 @@
 .album__nav-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; transition: transform 1000ms var(--ease-out), opacity 500ms var(--ease-out); }
 .album__nav-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(2 9 58 / 10%), rgb(2 9 58 / 85%)); }
 .album__nav-card--empty::after { display: none; }
-.album__nav-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; padding: clamp(18px, 1.8vw, 32px); }
+.album__nav-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; padding: clamp(18px, calc(var(--layout-unit) * 1.8), 32px); }
 .album__nav-dir { font-size: var(--fs-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-yellow); }
-.album__nav-text .name { font-size: clamp(1.6rem, 2.4vw, 3rem); color: var(--color-white); }
+.album__nav-text .name { font-size: clamp(1.6rem, calc(var(--layout-unit) * 2.4), 3rem); color: var(--color-white); }
 @media (hover: hover) {
   .album__nav-card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgb(0 0 0 / 70%); border-color: rgb(255 255 255 / 28%); }
   .album__nav-card:hover .album__nav-img { transform: scale(1.04); opacity: 0.6; }
@@ -134,3 +134,14 @@
   .album__nav-card--empty { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .album__thumb--skeleton { animation: none; } }
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  .album__topbar { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .album__switch { width: 100%; justify-content: space-between; }
+  .album__logo { max-width: 100%; height: auto; max-height: 90px; object-fit: contain; }
+  .album__grid { gap: 10px; }
+  .album__thumb { border-radius: 16px; }
+  .album__nav { gap: 16px; }
+}

@@ -3,12 +3,12 @@
 .marquee {
   background: var(--color-white);
   color: var(--color-navy);
-  padding-block: clamp(56px, 5.5vw, 104px);
+  padding-block: clamp(56px, calc(var(--layout-unit) * 5.5), 104px);
   overflow: clip;
 }
 
 /* Mesmo padrão de título de Ingressos: linha pequena + display Bebas */
-.marquee__head { text-align: center; margin: 0 var(--gutter) clamp(36px, 3.6vw, 72px); }
+.marquee__head { text-align: center; margin: 0 var(--gutter) clamp(36px, calc(var(--layout-unit) * 3.6), 72px); }
 .marquee__pre {
   color: var(--color-navy);
   font-size: var(--fs-lead);
@@ -32,15 +32,15 @@
 .marquee__row {
   display: flex;
   align-items: center;
-  gap: clamp(28px, 3vw, 56px);
-  padding-right: clamp(28px, 3vw, 56px);
+  gap: clamp(28px, calc(var(--layout-unit) * 3), 56px);
+  padding-right: clamp(28px, calc(var(--layout-unit) * 3), 56px);
   list-style: none;
 }
 /* Imagens como vêm (cartão + sombra já embutidos): só o tamanho */
 .marquee__item { flex: 0 0 auto; }
 .marquee__item img {
   display: block;
-  width: clamp(72px, 6.6vw, 104px);
+  width: clamp(72px, calc(var(--layout-unit) * 6.6), 104px);
   height: auto;
 }
 

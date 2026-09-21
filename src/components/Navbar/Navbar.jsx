@@ -46,6 +46,7 @@ export const Navbar = ({ solid = false }) => {
       if (e.key === "Escape") {
         e.preventDefault();
         setMenuOpen(false);
+        toggleRef.current?.focus({ preventScroll: true });
       } else if (e.key === "Tab") {
         const f = drawerRef.current?.querySelectorAll("a[href], button:not([disabled])");
         if (!f || f.length === 0) return;
@@ -71,7 +72,7 @@ export const Navbar = ({ solid = false }) => {
 
   const closeMenu = () => {
     setMenuOpen(false);
-    toggleRef.current?.focus();
+    toggleRef.current?.focus({ preventScroll: true });
   };
 
   const renderLink = (item, onClick) => {
@@ -93,7 +94,7 @@ export const Navbar = ({ solid = false }) => {
     <>
       <header className={`site-header${solid ? " is-solid" : ""}${hidden ? " is-hidden" : ""}`}>
         <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
-        <div className="container site-header__inner">
+        <div className="site-header__inner">
           <Link className="site-header__brand" to="/" aria-label="GTAP — início">
             <img src="/logo.svg" alt="X GTAP — Congresso Brasileiro de Gestão Tributária na Administração Pública" />
           </Link>
@@ -110,7 +111,7 @@ export const Navbar = ({ solid = false }) => {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={(e) => { toggleRef.current = e.currentTarget; setMenuOpen((v) => !v); }}
           >
             <span className={`burger${menuOpen ? " is-open" : ""}`} aria-hidden="true"><span></span><span></span><span></span></span>
           </button>
@@ -132,13 +133,12 @@ export const Navbar = ({ solid = false }) => {
             Garantir ingresso
           </a>
           <button
-            ref={toggleRef}
             type="button"
             className="floatbar__toggle"
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={(e) => { toggleRef.current = e.currentTarget; setMenuOpen((v) => !v); }}
           >
             <span className={`burger${menuOpen ? " is-open" : ""}`} aria-hidden="true"><span></span><span></span><span></span></span>
           </button>
@@ -148,6 +148,7 @@ export const Navbar = ({ solid = false }) => {
       <div className={`mobile-menu${menuOpen ? " is-open" : ""}`} hidden={!menuOpen}>
         <button type="button" className="mobile-menu__backdrop" aria-label="Fechar menu" tabIndex={-1} onClick={closeMenu} />
         <div id="mobile-menu" className="mobile-menu__panel" ref={drawerRef} role="dialog" aria-modal="true" aria-label="Menu de navegação">
+          <button className="mobile-menu__close" type="button" onClick={closeMenu} aria-label="Fechar menu">×</button>
           <nav aria-label="Navegação mobile">
             <ul>
               {NAV_ITEMS.map((item) => (

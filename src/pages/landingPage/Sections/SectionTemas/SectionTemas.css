@@ -2,9 +2,9 @@
 
 .themes {
   position: relative;
-  background: var(--color-yellow);
+  background: var(--color-cream);
   color: var(--color-ink);
-  padding-block: clamp(48px, 4.17vw, 80px) clamp(48px, 4.17vw, 80px);
+  padding-block: clamp(48px, calc(var(--layout-unit) * 4.17), 80px) clamp(48px, calc(var(--layout-unit) * 4.17), 80px);
   overflow: clip;
 }
 .themes__watermark {
@@ -20,28 +20,28 @@
 /* Bloco 1: coluna de texto (título + 01–03) | foto (459×623) alinhada ao topo */
 .themes__block {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(220px, 23.9vw, 459px);
-  column-gap: clamp(32px, 12.1vw, 233px);
+  grid-template-columns: minmax(0, 1fr) clamp(220px, calc(var(--layout-unit) * 23.9), 459px);
+  column-gap: clamp(32px, calc(var(--layout-unit) * 12.1), 233px);
   align-items: start;
 }
 .themes__block--reverse {
-  grid-template-columns: clamp(220px, 23.9vw, 459px) minmax(0, 1fr);
-  column-gap: clamp(32px, 10.6vw, 203px);
-  margin-top: clamp(40px, 3.8vw, 73px);
+  grid-template-columns: clamp(220px, calc(var(--layout-unit) * 23.9), 459px) minmax(0, 1fr);
+  column-gap: clamp(32px, calc(var(--layout-unit) * 10.6), 203px);
+  margin-top: clamp(40px, calc(var(--layout-unit) * 3.8), 73px);
 }
-.themes__block--reverse .themes__list { padding-top: clamp(24px, 4.5vw, 86px); }
+.themes__block--reverse .themes__list { padding-top: clamp(24px, calc(var(--layout-unit) * 4.5), 86px); }
 
 .themes__title {
   color: #000;
-  margin-bottom: clamp(32px, 3.9vw, 75px);
+  margin-bottom: clamp(32px, calc(var(--layout-unit) * 3.9), 75px);
 }
 
 .themes__list { list-style: none; }
 .theme-row {
   display: grid;
-  grid-template-columns: clamp(60px, 5.5vw, 106px) 1fr;
+  grid-template-columns: clamp(60px, calc(var(--layout-unit) * 5.5), 106px) 1fr;
   align-items: center;
-  padding-block: clamp(8px, 0.62vw, 12px);
+  padding-block: clamp(8px, calc(var(--layout-unit) * 0.62), 12px);
   border-top: 1px solid var(--line-on-yellow);
 }
 .themes__list li:first-child { border-top: 0; }
@@ -98,3 +98,20 @@
 
 /* Contexto de empilhamento para o fundo de palmeiras (BgWaves, z-index -1) */
 .themes { position: relative; isolation: isolate; }
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  .themes__title { margin-bottom: 24px; }
+  .themes__block, .themes__block--reverse { row-gap: 28px; }
+  .themes__block--reverse { margin-top: 32px; }
+  .themes__block--reverse .themes__photo-wrap { order: 2; }
+  .theme-row { grid-template-columns: 44px minmax(0, 1fr); gap: 8px; align-items: start; padding-block: 16px; }
+  .theme-row__num { font-size: 2rem; line-height: 1.1; }
+  .theme-row__text { font-size: 1.0625rem; line-height: 1.4; }
+  .themes__photo-wrap { transform: none !important; will-change: auto; }
+  .themes__photo { max-width: none; width: 100%; aspect-ratio: 5 / 4; }
+  .themes__3d { transform: none !important; will-change: auto; }
+  .themes__3d::after { display: none; }
+  .themes__3d img { object-position: center 35%; }
+}

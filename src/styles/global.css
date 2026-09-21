@@ -5,6 +5,8 @@
    ============================================================= */
 
 :root {
+  --layout-unit: min(1vw, 14.4px);
+  --color-cream: #fff4d8; /* superfície amarelo suave, próxima do off-white */
   /* ---- Cor (tokens do Figma) ---- */
   --color-navy: #02093a;        /* blue #9 */
   --color-navy-deep: #010718;
@@ -21,8 +23,8 @@
   --line-on-dark: rgb(255 255 255 / 18%);
 
   /* ---- Raio (Figma: 40 cards, 80 molduras, pill) ---- */
-  --radius-card: clamp(24px, 2.1vw, 40px);
-  --radius-frame: clamp(32px, 4.2vw, 80px);
+  --radius-card: clamp(24px, calc(var(--layout-unit) * 2.1), 40px);
+  --radius-frame: clamp(32px, calc(var(--layout-unit) * 4.2), 80px);
   --radius-pill: 999px;
 
   /* ---- Espaço ---- */
@@ -32,20 +34,20 @@
   --space-32: 128px;
 
   /* ---- Layout (Figma: margem lateral 156px em 1920) ---- */
-  --gutter: clamp(20px, 8.125vw, 156px);
-  --header-h: clamp(72px, 6.5vw, 124px);
+  --gutter: max(clamp(20px, calc(var(--layout-unit) * 8.125), 156px), calc((100vw - 1206px) / 2));
+  --header-h: clamp(60px, calc(var(--layout-unit) * 4.6), 88px);
 
   /* ---- Tipografia (escala proporcional ao frame de 1920) ---- */
   --font-display: "Bebas Neue", "Roboto Condensed", Impact, sans-serif;
   --font-sans: "Roboto Condensed", "Arial Narrow", system-ui, sans-serif;
 
-  --fs-display: clamp(3.4rem, 6.67vw, 8rem);   /* 128px */
-  --fs-h2: clamp(2.6rem, 5vw, 6rem);           /* 96px */
-  --fs-name: clamp(2rem, 3.33vw, 4rem);        /* 64px */
-  --fs-lead: clamp(1.25rem, 2.5vw, 3rem);      /* 48px */
-  --fs-body-lg: clamp(1.1rem, 1.67vw, 2rem);   /* 32px */
-  --fs-body: clamp(1rem, 1.04vw, 1.25rem);     /* 20px */
-  --fs-nav: clamp(1rem, 1.67vw, 2rem);         /* 32px */
+  --fs-display: clamp(3.4rem, calc(var(--layout-unit) * 6.67), 8rem);   /* 128px */
+  --fs-h2: clamp(2.6rem, calc(var(--layout-unit) * 5), 6rem);           /* 96px */
+  --fs-name: clamp(2rem, calc(var(--layout-unit) * 3.33), 4rem);        /* 64px */
+  --fs-lead: clamp(1.25rem, calc(var(--layout-unit) * 2.5), 3rem);      /* 48px */
+  --fs-body-lg: clamp(1.1rem, calc(var(--layout-unit) * 1.67), 2rem);   /* 32px */
+  --fs-body: clamp(1rem, calc(var(--layout-unit) * 1.04), 1.25rem);     /* 20px */
+  --fs-nav: clamp(1rem, calc(var(--layout-unit) * 1.67), 2rem);         /* 32px */
 
   /* ---- Movimento ---- */
   --dur-fast: 160ms;
@@ -82,11 +84,11 @@
   --shadow-card: 0 5px 10px rgb(0 0 0 / 10%);
   --shadow-float: 0 18px 50px -18px rgb(0 0 0 / 55%);
   --fs-h1: var(--fs-display);
-  --fs-h3: clamp(1.4rem, 2.4vw, 2.1rem);
+  --fs-h3: clamp(1.4rem, calc(var(--layout-unit) * 2.4), 2.1rem);
   --fs-stat: var(--fs-display);
   --fs-label: 0.85rem;
   --container: 1320px;
-  --section-space: clamp(64px, 8vw, 128px);
+  --section-space: clamp(64px, calc(var(--layout-unit) * 8), 128px);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --z-content: 0;
 }
@@ -106,7 +108,7 @@
 .surface-gold { background: var(--color-gold); color: var(--color-white); }
 .surface-paper { background: var(--color-off); color: var(--color-ink); }
 .surface-white { background: var(--color-white); color: var(--color-ink); }
-.container--wide { padding-inline: clamp(20px, 2.1vw, 40px); }
+.container--wide { padding-inline: clamp(20px, calc(var(--layout-unit) * 2.1), 40px); }
 
 /* ============================ Base ============================ */
 
@@ -168,15 +170,15 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  min-height: clamp(52px, 5vw, 96px);
-  padding: 0 clamp(28px, 3vw, 56px);
+  min-height: clamp(52px, calc(var(--layout-unit) * 5), 96px);
+  padding: 0 clamp(28px, calc(var(--layout-unit) * 3), 56px);
   border-radius: var(--radius-pill);
   background: var(--btn-bg);
   color: var(--btn-fg);
   border: 2px solid var(--btn-bd);
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: clamp(1rem, 1.46vw, 1.75rem);
+  font-size: clamp(1rem, calc(var(--layout-unit) * 1.46), 1.75rem);
   letter-spacing: -0.02em;
   line-height: 1;
   cursor: pointer;
@@ -300,3 +302,17 @@ body {
 }
 .skip-link:focus { top: 0; }
 .no-scroll { overflow: hidden; }
+
+/* Ajustes exclusivos para celular — desktop preservado. */
+
+@media (max-width: 720px) {
+  :root {
+    --gutter: 20px;
+    --fs-display: clamp(2.75rem, 12vw, 3.75rem);
+    --fs-h2: clamp(2.4rem, 10vw, 3rem);
+    --radius-frame: 28px;
+  }
+  .btn { min-height: 52px; padding-inline: 22px; }
+  .body-lg { line-height: 1.4; }
+  [id] { scroll-margin-top: 88px; }
+}
