@@ -1,6 +1,5 @@
 import { adaptLandingData } from "../../../../data/event";
 import { useReveal } from "../../../../hooks/useReveal";
-import { SplitWords } from "../../../../components/ui/SplitWords";
 import "./SectionPublico.css";
 
 // Instituições (dados reais: type 2 + 5 do landing_page.json), minimalista:
@@ -32,10 +31,7 @@ export const SectionPublico = ({ data }) => {
   return (
     <section className="marquee" id="instituicoes" ref={revealRef} aria-labelledby="marquee-title">
       <header className="marquee__head" data-reveal>
-        <p className="marquee__pre">Quem já participou</p>
-        <h2 id="marquee-title" className="display marquee__title split">
-          <SplitWords text="Instituições" />
-        </h2>
+        <h2 id="marquee-title" className="h2 marquee__title">Quem já marcou presença:</h2>
       </header>
       <div className="marquee__viewport" data-reveal data-reveal-index="1">
         <div className="marquee__track">

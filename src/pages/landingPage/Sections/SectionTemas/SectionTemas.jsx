@@ -3,9 +3,6 @@ import { adaptLandingData } from "../../../../data/event";
 import { useReveal, useReducedMotion } from "../../../../hooks/useReveal";
 import foto1 from "../../../../assets/figma/temas-foto-1.webp";
 import foto2 from "../../../../assets/figma/temas-foto-2.webp";
-import watermark from "../../../../assets/figma/watermark-temas.svg";
-import { SplitWords } from "../../../../components/ui/SplitWords";
-import { BgWaves } from "../../../../components/media/BgWaves";
 import "./SectionTemas.css";
 
 const ThemeRow = ({ theme, index }) => (
@@ -28,12 +25,12 @@ const useScrollTilt = (refs, reduced) => {
     const update = () => {
       raf = 0;
       const vh = window.innerHeight;
-      refs.forEach(({ ref, base }) => {
+      refs.forEach(({ ref, base, range = 6 }) => {
         const el = ref.current;
         if (!el) return;
         const r = el.getBoundingClientRect();
         const p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height))); // 0 → 1
-        const rot = base + (p - 0.5) * 6;
+        const rot = base + (p - 0.5) * range;
         const y = (0.5 - p) * 48;
         el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) rotate(${rot.toFixed(2)}deg)`;
       });
@@ -85,28 +82,23 @@ export const SectionTemas = ({ data }) => {
   const photoB = useRef(null);
   const tiltRefs = useRef([
     { ref: photoA, base: -4 },
-    { ref: photoB, base: 3 },
+    { ref: photoB, base: 5, range: 2 },
   ]).current;
   useScrollTilt(tiltRefs, reduced);
   const tilt3d = use3DTilt(reduced);
-  const first = themes.slice(0, 3);
-  const rest = themes.slice(3);
 
   return (
     <section className="themes on-yellow" id="temas" ref={revealRef}>
-      <BgWaves tone="navy" />
-      <img className="themes__watermark" src={watermark} alt="" aria-hidden="true" />
 
       <div className="container themes__inner">
         <div className="themes__block">
           <div className="themes__col">
-            <h2 className="display themes__title split" data-reveal>
-              <SplitWords text="Temas confirmados" />
-            </h2>
+            <h2 className="h2 themes__title"><span className="section-copy--desktop">O que vamos discutir no X GTAP</span><span className="section-copy--mobile">O que vamos discutir:</span></h2>
             <ol className="themes__list" start="1">
-              {first.map((t, i) => <ThemeRow key={t.id} theme={t} index={i + 1} />)}
+              {themes.map((t, i) => <ThemeRow key={t.id} theme={t} index={i + 1} />)}
             </ol>
           </div>
+          <div className="themes__photos">
           <div className="themes__photo-wrap themes__photo-wrap--a" ref={photoA}>
             <figure className="themes__photo" data-reveal data-reveal-fx="wipe" {...tilt3d}>
               <div className="themes__3d">
@@ -114,10 +106,6 @@ export const SectionTemas = ({ data }) => {
               </div>
             </figure>
           </div>
-        </div>
-
-        {rest.length > 0 && (
-          <div className="themes__block themes__block--reverse">
             <div className="themes__photo-wrap themes__photo-wrap--b" ref={photoB}>
               <figure className="themes__photo" data-reveal data-reveal-fx="wipe" data-reveal-index="1" {...tilt3d}>
                 <div className="themes__3d">
@@ -125,11 +113,8 @@ export const SectionTemas = ({ data }) => {
                 </div>
               </figure>
             </div>
-            <ol className="themes__list" start="4">
-              {rest.map((t, i) => <ThemeRow key={t.id} theme={t} index={i} />)}
-            </ol>
           </div>
-        )}
+        </div>
 
         {themes.length === 0 && (
           <p className="body-lg">A programação temática será divulgada em breve.</p>

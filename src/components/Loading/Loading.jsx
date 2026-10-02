@@ -7,9 +7,8 @@ import logoText from "../../assets/figma/loading-text.svg";
 import { routeTransition } from "../../hooks/routeTransition";
 import "./Loading.css";
 
-const MIN_FIRST_MS = 2100;
-const MIN_ROUTE_MS = 1100;
-const MAX_FIRST_WAIT_MS = 6000;
+const MIN_FIRST_MS = 650;
+const MIN_ROUTE_MS = 300;
 
 // Tela de loading do Figma (5132:120). No primeiro carregamento, espera a página;
 // nas trocas de rota, a mesma cortina desce, mostra o logo e sobe.
@@ -40,30 +39,21 @@ export const Loading = () => {
     let t1;
 
     let finished = false;
-    let cap;
     const finish = () => {
       if (finished) return;
       finished = true;
-      window.clearTimeout(cap);
       const wait = Math.max(0, min - (performance.now() - start));
       t1 = window.setTimeout(() => {
         setState((s) => ({ ...s, phase: "leaving" }));
         document.body.classList.remove("loading-active", "no-scroll");
       }, wait);
     };
-
-    if (state.mode === "route" || document.readyState === "complete") finish();
-    else {
-      window.addEventListener("load", finish, { once: true });
-      // Mídia remota lenta (vídeos) não pode segurar a cortina indefinidamente
-      cap = window.setTimeout(finish, MAX_FIRST_WAIT_MS);
-    }
+    // O conteúdo já está montado; mídia remota não bloqueia a navegação.
+    finish();
 
     return () => {
-      window.removeEventListener("load", finish);
-      window.clearTimeout(cap);
       window.clearTimeout(t1);
-      document.body.classList.remove("loading-active");
+      document.body.classList.remove("loading-active", "no-scroll");
     };
   }, [state.phase, state.mode, state.key]);
 
@@ -71,7 +61,7 @@ export const Loading = () => {
   // pela limpeza do efeito acima ao mudar de fase)
   useEffect(() => {
     if (state.phase !== "leaving") return;
-    const t = window.setTimeout(() => setState((s) => ({ ...s, phase: "done" })), 900);
+    const t = window.setTimeout(() => setState((s) => ({ ...s, phase: "done" })), 360);
     return () => window.clearTimeout(t);
   }, [state.phase]);
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Navbar } from "../../../components/Navbar/Navbar";
 import { Footer } from "../../../components/Footer/Footer";
@@ -22,7 +22,17 @@ export const GaleriaEdition = () => {
   const [status, setStatus] = useState("loading"); // loading|success|empty|error
   const [images, setImages] = useState([]);
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const revealRef = useReveal({ stagger: 60, deps: [images.length, status] });
+  const [visibleCount, setVisibleCount] = useState(36);
+  const pendingPhotoFocus = useRef(null);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const revealRef = useReveal({ stagger: 60, deps: [images.length, status, visibleCount] });
+
+  useEffect(() => {
+    if (pendingPhotoFocus.current === null) return;
+    const photo = revealRef.current?.querySelectorAll("button.album__thumb")[pendingPhotoFocus.current];
+    photo?.focus({ preventScroll: true });
+    pendingPhotoFocus.current = null;
+  }, [visibleCount, revealRef]);
 
   useEffect(() => {
     if (edition) document.title = `${edition.label} — Galeria GTAP`;
@@ -32,6 +42,10 @@ export const GaleriaEdition = () => {
     if (!edition) return;
     const controller = new AbortController();
     setStatus("loading");
+    setImages([]);
+    setVisibleCount(36);
+    setLightboxIndex(null);
+    pendingPhotoFocus.current = null;
     fetch(`${import.meta.env.BASE_URL}api/galerias/${edition.slug}.json`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(String(res.status));
@@ -101,6 +115,7 @@ export const GaleriaEdition = () => {
             </div>
 
             <div className="album__head-grid">
+              <h1 className="visually-hidden">{edition.label} — Galeria de fotos</h1>
               <div className="album__head-text" data-reveal data-reveal-index="1">
                 <img className="album__logo" src={edition.logo} alt={edition.label} />
                 <p className="album__lead">
@@ -148,7 +163,7 @@ export const GaleriaEdition = () => {
 
             {status === "success" && (
               <ul className="album__grid">
-                {images.map((img, index) => (
+                {images.slice(0, visibleCount).map((img, index) => (
                   <li key={img.url || index}>
                     <button
                       type="button"
@@ -159,12 +174,22 @@ export const GaleriaEdition = () => {
                       data-reveal-fx="scale"
                       data-reveal-index={index % 6}
                     >
-                      <img src={img.url} alt={`Foto ${index + 1} — ${edition.label}`} loading="lazy" />
+                      <img src={img.url} alt={`Foto ${index + 1} — ${edition.label}`} loading="lazy" decoding="async" />
                       <span className="album__thumb-idx" aria-hidden="true">{pad(index + 1)}</span>
                     </button>
                   </li>
                 ))}
               </ul>
+            )}
+
+            {status === "success" && visibleCount < images.length && (
+              <div className="album__more">
+                <p>{Math.min(visibleCount, images.length)} de {images.length} fotos</p>
+                <button type="button" className="btn btn--outline" onClick={() => {
+                  pendingPhotoFocus.current = visibleCount;
+                  setVisibleCount((count) => count + 36);
+                }}>Carregar mais fotos</button>
+              </div>
             )}
 
             <div className="album__nav" data-reveal>
@@ -181,7 +206,7 @@ export const GaleriaEdition = () => {
           images={images}
           index={lightboxIndex}
           onNav={setLightboxIndex}
-          onClose={() => setLightboxIndex(null)}
+          onClose={closeLightbox}
         />
       )}
     </>

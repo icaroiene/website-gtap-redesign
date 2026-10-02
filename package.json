@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predev": "node scripts/gallery-counts.mjs",
+    "prebuild": "node scripts/gallery-counts.mjs"
   },
   "dependencies": {
     "animate.css": "^4.1.1",

@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { adaptLandingData } from "../../../../data/event";
 import { useReveal } from "../../../../hooks/useReveal";
-import { SplitWords } from "../../../../components/ui/SplitWords";
-import { AmbientVideo } from "../../../../components/media/AmbientVideo";
-import { AMBIENT } from "../../../../data/media";
 import playTriangle from "../../../../assets/figma/play-triangle.svg";
 import "./SectionDepoimentos.css";
 
@@ -152,12 +149,13 @@ const VideoPoster = ({ src, id }) => {
 };
 
 // Depoimentos reais do site em carrossel horizontal de uma linha
-// (scroll-snap, arrasto com o mouse, setas e teclado).
+// Loop contínuo com rolagem nativa, arrasto e setas.
 export const SectionDepoimentos = ({ data }) => {
   const { testimonials } = adaptLandingData(data);
   const [activeId, setActiveId] = useState(null);
   const revealRef = useReveal({ stagger: 90, deps: [testimonials.length] });
   const trackRef = useRef(null);
+  const motion = useRef({ target: null, wake: null });
   const drag = useRef({ on: false, x: 0, left: 0, moved: false });
 
   const step = () => {
@@ -165,31 +163,91 @@ export const SectionDepoimentos = ({ data }) => {
     const card = track?.querySelector(".voice-card");
     return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 24) : 400;
   };
-  const scrollBy = (dir) => trackRef.current?.scrollBy({ left: dir * step(), behavior: "smooth" });
-
-  // Roda/trackpad: o Lenis (vertical) só consome deltaY, então a roda vertical
-  // segue rolando a página normalmente; gesto predominantemente horizontal
-  // rola o trilho. (Sem data-lenis-prevent — ele travava a rolagem da página.)
-  const onWheel = (e) => {
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) trackRef.current.scrollLeft += e.deltaX;
+  const scrollBy = (dir) => {
+    const track = trackRef.current;
+    if (!track) return;
+    motion.current.target = (motion.current.target ?? track.scrollLeft) + dir * step();
+    motion.current.wake?.();
   };
+
+  // Três cópias permitem reposicionar o trilho sem salto visível.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || testimonials.length < 2) return;
+    const movement = motion.current;
+    let frame = 0;
+    let previous = 0;
+    let cycle = 0;
+    const cycleWidth = () => {
+      const cards = track.querySelectorAll(".voice-card");
+      return cards[testimonials.length].offsetLeft - cards[0].offsetLeft;
+    };
+    const measure = () => { cycle = cycleWidth(); };
+    measure();
+    const resize = new ResizeObserver(measure);
+    resize.observe(track);
+    track.scrollLeft = cycle;
+    const normalize = () => {
+      const shift = track.scrollLeft < cycle * 0.5 ? cycle
+        : track.scrollLeft > cycle * 1.5 ? -cycle : 0;
+      if (shift) {
+        track.scrollLeft += shift;
+        if (motion.current.target !== null) motion.current.target += shift;
+      }
+    };
+    const tick = (time) => {
+      frame = 0;
+      const dt = Math.min(time - (previous || time), 48);
+      previous = time;
+      const state = motion.current;
+      if (!drag.current.on && state.target !== null) {
+        const distance = state.target - track.scrollLeft;
+        if (Math.abs(distance) < 1.5) {
+          track.scrollLeft = state.target;
+          state.target = null;
+        } else track.scrollLeft += distance * (1 - Math.exp(-dt / 100));
+      }
+      normalize();
+      if (state.target !== null && !drag.current.on) frame = requestAnimationFrame(tick);
+      else previous = 0;
+    };
+    movement.wake = () => { if (!frame) frame = requestAnimationFrame(tick); };
+    track.addEventListener("scroll", normalize, { passive: true });
+    return () => {
+      resize.disconnect();
+      movement.wake = null;
+      cancelAnimationFrame(frame);
+      track.removeEventListener("scroll", normalize);
+    };
+  }, [testimonials.length]);
 
   // Arrasto com o mouse (touch já rola nativamente)
   const onPointerDown = (e) => {
-    if (e.pointerType !== "mouse") return;
-    drag.current = { on: true, x: e.clientX, left: trackRef.current.scrollLeft, moved: false };
+    if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("video")) return;
+    motion.current.target = null;
+    drag.current = { on: true, x: e.clientX, startX: e.clientX, moved: false };
     trackRef.current.classList.add("is-dragging");
   };
   const onPointerMove = (e) => {
     if (!drag.current.on) return;
-    const dx = e.clientX - drag.current.x;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
-    trackRef.current.scrollLeft = drag.current.left - dx;
+    const track = trackRef.current;
+    if (!drag.current.moved && Math.abs(e.clientX - drag.current.startX) > 4) {
+      drag.current.moved = true;
+      track.setPointerCapture(e.pointerId);
+    }
+    if (drag.current.moved) {
+      e.preventDefault();
+      // Delta incremental continua correto quando o loop reposiciona o trilho.
+      track.scrollLeft += drag.current.x - e.clientX;
+    }
+    drag.current.x = e.clientX;
   };
-  const endDrag = () => {
+  const endDrag = (e) => {
     if (!drag.current.on) return;
     drag.current.on = false;
-    trackRef.current?.classList.remove("is-dragging");
+    const track = trackRef.current;
+    track?.classList.remove("is-dragging");
+    if (track?.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
   };
   const onClickCapture = (e) => {
     if (drag.current.moved) {
@@ -203,13 +261,9 @@ export const SectionDepoimentos = ({ data }) => {
 
   return (
     <section className="voices" id="depoimentos" ref={revealRef}>
-      {/* Forte de Santo Antônio desfocado, em baixa opacidade sobre o azul */}
-      <AmbientVideo src={AMBIENT.forte} className="ambient--sea" mobile={false} />
 
       <div className="container voices__head">
-        <h2 className="display voices__title text-yellow split" data-reveal>
-          <SplitWords text="Depoimentos" />
-        </h2>
+        <h2 className="h2 voices__title"><span className="section-copy--desktop">O GTAP por quem já participou</span><span className="section-copy--mobile">Quem já participou</span></h2>
         <div className="voices__nav" data-reveal data-reveal-index="1">
           <button type="button" className="voices__arrow" onClick={() => scrollBy(-1)} aria-label="Depoimentos anteriores">‹</button>
           <button type="button" className="voices__arrow" onClick={() => scrollBy(1)} aria-label="Próximos depoimentos">›</button>
@@ -219,27 +273,31 @@ export const SectionDepoimentos = ({ data }) => {
       <ul
         className="voices__track"
         ref={trackRef}
-        onWheel={onWheel}
+        data-lenis-prevent-horizontal
+        onTouchStart={() => { motion.current.target = null; }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
-        onPointerLeave={endDrag}
+        onPointerCancel={endDrag}
+        onLostPointerCapture={endDrag}
+        onDragStart={(e) => e.preventDefault()}
         onClickCapture={onClickCapture}
       >
-        {testimonials.map((item, index) => {
-          const isActive = activeId === item.id;
+        {(testimonials.length > 1 ? [0, 1, 2] : [0]).flatMap((copy) => testimonials.map((item) => {
+          const cardId = `${copy}-${item.id}`;
+          const isActive = activeId === cardId;
           return (
-            <li className="voice-card" key={item.id} data-reveal data-reveal-fx="scale" data-reveal-index={index % 4}>
+            <li className="voice-card" key={cardId}>
               <div className="voice-card__media">
                 {isActive ? (
-                  <video className="voice-card__video" src={item.video} controls autoPlay playsInline />
+                  <video className="voice-card__video" src={item.video} controls autoPlay playsInline onEnded={() => setActiveId(null)} />
                 ) : (
                   <>
                     <VideoPoster src={item.video} id={item.id} />
                     <button
                       type="button"
                       className="voice-card__poster"
-                      onClick={() => setActiveId(item.id)}
+                      onClick={() => setActiveId(cardId)}
                       aria-label={`Assistir ao depoimento de ${item.author}`}
                     >
                       <span className="voice-card__play" aria-hidden="true">
@@ -254,7 +312,7 @@ export const SectionDepoimentos = ({ data }) => {
               {item.quote && <blockquote className="voice-card__quote">“{item.quote}”</blockquote>}
             </li>
           );
-        })}
+        }))}
       </ul>
     </section>
   );

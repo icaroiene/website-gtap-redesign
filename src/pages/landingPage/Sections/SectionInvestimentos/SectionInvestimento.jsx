@@ -1,57 +1,54 @@
 import { useLoteAtual } from "../../../../Utils/useLoteAtual";
 import { ACTIONS } from "../../../../data/event";
 import { useReveal } from "../../../../hooks/useReveal";
-import watermark from "../../../../assets/figma/watermark-ingresso.svg";
-import { SplitWords } from "../../../../components/ui/SplitWords";
-import { BgWaves } from "../../../../components/media/BgWaves";
 import "./SectionInvestimento.css";
 
-// "Ingressos" do Figma: dourado, "Escolha seu INGRESSO", dois cards quadrados
-// (Individual em azul · Em grupo em dourado com borda clara e marca d'água).
 export const SectionInvestimento = () => {
-  const { loteAtual, precoAtual, nomeLoteAtual } = useLoteAtual();
-  const revealRef = useReveal({ stagger: 120 });
-  const hasLote = Boolean(loteAtual && precoAtual);
+  const { lotes, loteAtual } = useLoteAtual();
+  const revealRef = useReveal({ stagger: 80 });
 
   return (
-    <section className="tickets" id="ingressos" ref={revealRef}>
-      <BgWaves tone="navy" />
+    <section className="tickets" id="ingressos" ref={revealRef} aria-labelledby="tickets-title">
       <div className="container">
-        <header className="tickets__head" data-reveal>
-          <p className="tickets__pre">Escolha seu</p>
-          <h2 className="display tickets__title split"><SplitWords text="Ingresso" /></h2>
+        <header className="tickets__head">
+          <h2 id="tickets-title" className="h2 tickets__title">Garanta sua participação</h2>
         </header>
 
         <div className="tickets__grid">
-          <article className="ticket ticket--individual" data-reveal data-reveal-index="1">
-            <h3 className="h2 ticket__title">Individual</h3>
-            <div className="ticket__text">
-              {hasLote ? (
-                <>
-                  <p className="ticket__price">{precoAtual}</p>
-                  <p>por participante · {nomeLoteAtual}</p>
-                  <p className="ticket__window">{loteAtual.label}</p>
-                </>
-              ) : (
-                <p>Consulte as condições vigentes de inscrição individual com a nossa equipe.</p>
-              )}
-            </div>
-            <a className="btn btn--yellow ticket__btn" href={ACTIONS.registrationUrl} target="_blank" rel="noopener noreferrer">
-              Garantir minha vaga
-            </a>
-          </article>
-
-          <article className="ticket ticket--group" data-reveal data-reveal-index="2">
-            <img className="ticket__watermark" src={watermark} alt="" aria-hidden="true" />
-            <h3 className="h2 ticket__title">Em grupo</h3>
-            <div className="ticket__text">
-              <p>Condições especiais para equipes, órgãos e entidades que participam em grupo. Fale com a nossa equipe e receba uma proposta.</p>
-            </div>
-            <a className="btn btn--navy ticket__btn" href={ACTIONS.groupsUrl} target="_blank" rel="noopener noreferrer">
-              Falar sobre grupos
-            </a>
-          </article>
+          {lotes.map((lote, index) => {
+            const current = lote.status === "presente";
+            const expired = lote.status === "passado";
+            return (
+              <article key={lote.nome} className={`ticket ${current ? "ticket--current" : "ticket--inactive"}`}
+                aria-labelledby={`ticket-lot-${index}`} data-reveal data-reveal-index={index}>
+                <div className="ticket__top">
+                  <span className="ticket__status">{current ? "Disponível" : expired ? "Encerrado" : "Em breve"}</span>
+                  <h3 id={`ticket-lot-${index}`} className="h3 ticket__title">{lote.nome}</h3>
+                </div>
+                <div className="ticket__tear" aria-hidden="true" />
+                <div className="ticket__pricing">
+                  <p className={`ticket__price${expired ? " ticket__price--closed" : ""}`} aria-label={expired ? "Valor do lote encerrado" : undefined}>
+                    {expired ? <span aria-hidden="true">{lote.preco}</span> : lote.preco}
+                  </p>
+                  <p className="ticket__unit">por participante</p>
+                  {current && <p className="ticket__window">{lote.label}</p>}
+                </div>
+                {current ? (
+                  <a className="btn btn--navy ticket__btn" href={ACTIONS.registrationUrl} target="_blank" rel="noopener noreferrer">
+                    Garantir minha vaga <span aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <p className="ticket__closed">{expired ? "Inscrições encerradas" : "Aguarde a abertura"}</p>
+                )}
+              </article>
+            );
+          })}
         </div>
+
+        {!loteAtual && <p className="tickets__notice">Consulte as condições vigentes com a nossa equipe.</p>}
+        <a className="ticket-group" href={ACTIONS.groupsUrl} target="_blank" rel="noopener noreferrer">
+          Condições especiais para equipes e órgãos <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </section>
   );

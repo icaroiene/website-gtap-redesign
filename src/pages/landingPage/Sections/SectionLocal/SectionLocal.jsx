@@ -3,6 +3,7 @@ import { useReveal } from "../../../../hooks/useReveal";
 import { SplitWords } from "../../../../components/ui/SplitWords";
 import fallbackImg from "../../../../assets/faroldabarra.webp";
 import { AmbientVideo } from "../../../../components/media/AmbientVideo";
+import { AMBIENT } from "../../../../data/media";
 import "./SectionLocal.css";
 
 // Pontos turísticos em vídeo (clipes fornecidos pelo cliente, comprimidos em
@@ -16,8 +17,7 @@ const SPOTS = [
 
 // Localização no padrão da seção Vídeo: moldura r80 com foto de Salvador e o
 // lettering; um "mapinha" embutido no canto (carregado sob demanda);
-// abaixo, a linha com local/data, o único botão da seção ("Como chegar")
-// e uma faixa de pontos turísticos da cidade.
+// abaixo, uma faixa de pontos turísticos da cidade.
 export const SectionLocal = ({ data }) => {
   const { localImages } = adaptLandingData(data);
   const revealRef = useReveal({ deps: [localImages.length] });
@@ -25,6 +25,7 @@ export const SectionLocal = ({ data }) => {
 
   return (
     <section className="venue" id="localizacao" ref={revealRef}>
+      <AmbientVideo src={AMBIENT.farol} className="ambient--sea" mobile={false} />
       <div className="venue__frame" data-reveal data-reveal-fx="scale">
         <img className="venue__photo" src={photo} alt="Salvador, Bahia — cidade-sede do GTAP" loading="lazy" />
 
@@ -44,21 +45,13 @@ export const SectionLocal = ({ data }) => {
             allowFullScreen
           />
           <span className="venue__mapcard-label">
-            <span className="venue__pin" aria-hidden="true">◉</span> {EVENT.venue}
+            {EVENT.venue}
+            <span className="venue__mapcard-city">{EVENT.city}/{EVENT.state}</span>
           </span>
         </div>
       </div>
 
       <h2 className="visually-hidden">Localização: mais uma vez em Salvador</h2>
-
-      <div className="venue__meta" data-reveal data-reveal-index="3">
-        <p className="venue__pill">
-          {EVENT.venue} · {EVENT.dateLabelShort} · {EVENT.city}/{EVENT.state}
-        </p>
-        <a className="btn btn--yellow venue__route" href={EVENT.mapLink} target="_blank" rel="noopener noreferrer">
-          Como chegar
-        </a>
-      </div>
 
       <div className="container venue__spots-wrap">
         <p className="venue__spots-title" data-reveal data-reveal-index="4">

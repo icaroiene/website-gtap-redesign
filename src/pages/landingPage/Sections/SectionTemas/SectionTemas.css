@@ -2,38 +2,24 @@
 
 .themes {
   position: relative;
-  background: var(--color-cream);
+  background: var(--color-white);
   color: var(--color-ink);
-  padding-block: clamp(48px, calc(var(--layout-unit) * 4.17), 80px) clamp(48px, calc(var(--layout-unit) * 4.17), 80px);
+  padding-block: var(--section-space);
   overflow: clip;
-}
-.themes__watermark {
-  position: absolute;
-  left: 46.9%;
-  top: 17.7%;
-  width: 54.9%;
-  height: auto;
-  pointer-events: none;
 }
 .themes__inner { position: relative; }
 
-/* Bloco 1: coluna de texto (título + 01–03) | foto (459×623) alinhada ao topo */
+/* Leitura contínua à esquerda; fotos empilhadas à direita. */
 .themes__block {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(220px, calc(var(--layout-unit) * 23.9), 459px);
-  column-gap: clamp(32px, calc(var(--layout-unit) * 12.1), 233px);
+  grid-template-columns: minmax(0, 1fr) clamp(150px, 16vw, 220px);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
-.themes__block--reverse {
-  grid-template-columns: clamp(220px, calc(var(--layout-unit) * 23.9), 459px) minmax(0, 1fr);
-  column-gap: clamp(32px, calc(var(--layout-unit) * 10.6), 203px);
-  margin-top: clamp(40px, calc(var(--layout-unit) * 3.8), 73px);
-}
-.themes__block--reverse .themes__list { padding-top: clamp(24px, calc(var(--layout-unit) * 4.5), 86px); }
-
+.themes__photos { display: grid; gap: 24px; padding-top: 8px; }
 .themes__title {
   color: #000;
-  margin-bottom: clamp(32px, calc(var(--layout-unit) * 3.9), 75px);
+  margin-bottom: clamp(28px, 3vw, 48px);
 }
 
 .themes__list { list-style: none; }
@@ -42,7 +28,7 @@
   grid-template-columns: clamp(60px, calc(var(--layout-unit) * 5.5), 106px) 1fr;
   align-items: center;
   padding-block: clamp(8px, calc(var(--layout-unit) * 0.62), 12px);
-  border-top: 1px solid var(--line-on-yellow);
+  border-top: 1px solid rgb(1 7 24 / 8%);
 }
 .themes__list li:first-child { border-top: 0; }
 .theme-row__num { color: var(--color-ink); line-height: 0.9; transition: color 360ms, transform 360ms var(--ease-out); }
@@ -55,10 +41,10 @@
 /* Inclinação de repouso (a rotação ligada ao scroll é aplicada por JS no wrapper) */
 .themes__photo-wrap { will-change: transform; }
 .themes__photo-wrap--a { transform: rotate(-4deg); }
-.themes__photo-wrap--b { transform: rotate(3deg); }
+.themes__photo-wrap--b { transform: rotate(5deg); }
 
 .themes__photo {
-  aspect-ratio: 459 / 623;
+  aspect-ratio: 5 / 6;
   border-radius: var(--radius-card);
   perspective: 1000px;           /* palco 3D para o cartão interno */
   transform-style: preserve-3d;
@@ -88,30 +74,21 @@
 .themes__3d.is-hover::after { opacity: 1; }
 
 @media (max-width: 860px) {
-  .themes__block,
-  .themes__block--reverse { grid-template-columns: 1fr; row-gap: var(--space-8); }
-  .themes__block--reverse .themes__photo { order: 2; }
-  .themes__block--reverse .themes__list { padding-top: 0; }
-  .themes__photo { max-width: 360px; aspect-ratio: 4 / 5; }
-  .themes__watermark { width: 90%; top: 40%; left: 30%; }
+  .themes__block { grid-template-columns: 1fr; gap: 32px; }
+  .themes__photos { grid-template-columns: 1fr 1fr; gap: 20px; max-width: 440px; width: 100%; margin-inline: auto; }
+  .themes__photo { aspect-ratio: 4 / 5; }
 }
-
-/* Contexto de empilhamento para o fundo de palmeiras (BgWaves, z-index -1) */
-.themes { position: relative; isolation: isolate; }
-
-/* Ajustes exclusivos para celular — desktop preservado. */
-
+.themes { isolation: isolate; }
 @media (max-width: 720px) {
   .themes__title { margin-bottom: 24px; }
-  .themes__block, .themes__block--reverse { row-gap: 28px; }
-  .themes__block--reverse { margin-top: 32px; }
-  .themes__block--reverse .themes__photo-wrap { order: 2; }
-  .theme-row { grid-template-columns: 44px minmax(0, 1fr); gap: 8px; align-items: start; padding-block: 16px; }
+  .theme-row { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: start; padding-block: 22px; }
   .theme-row__num { font-size: 2rem; line-height: 1.1; }
-  .theme-row__text { font-size: 1.0625rem; line-height: 1.4; }
+  .theme-row__text { font-size: var(--fs-body); line-height: 1.45; }
   .themes__photo-wrap { transform: none !important; will-change: auto; }
-  .themes__photo { max-width: none; width: 100%; aspect-ratio: 5 / 4; }
+  .themes__photo { width: 100%; }
   .themes__3d { transform: none !important; will-change: auto; }
   .themes__3d::after { display: none; }
   .themes__3d img { object-position: center 35%; }
 }
+
+.themes__inner { z-index: 1; }

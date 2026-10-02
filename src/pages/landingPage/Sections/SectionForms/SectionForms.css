@@ -1,9 +1,9 @@
 /* ===================== Contato (padrão Temas/Ingressos) ===================== */
 
 .contact {
-  background: var(--color-cream);
+  background: var(--color-white);
   color: var(--color-ink);
-  padding-block: clamp(56px, calc(var(--layout-unit) * 4.2), 80px) clamp(64px, calc(var(--layout-unit) * 5), 96px);
+  padding-block: var(--section-space);
   overflow: clip;
 }
 .contact__grid {
@@ -46,19 +46,23 @@
   .contact__text { max-width: none; }
 }
 
-/* Contexto de empilhamento para o fundo de palmeiras (BgWaves, z-index -1) */
+/* Superfície branca da seção de contato. */
 .contact { position: relative; isolation: isolate; }
 
 /* Ajustes exclusivos para celular — desktop preservado. */
 
 @media (max-width: 720px) {
-  .contact__grid { gap: 28px; }
-  .contact__title { margin-bottom: 16px; }
+  .contact__text, .contact__facts { display: none; }
+  .contact__grid { gap: 40px; }
+  .contact__title { margin-bottom: 0; text-align: center; font-size: clamp(2.75rem, 10.5vw, 3.5rem); line-height: 1.05; }
   .contact__text { margin-bottom: 24px; font-size: 1.125rem; }
   .contact__facts div { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding-block: 16px; }
   .contact__facts dt { font-size: 1.5rem; }
   .contact__facts dd { font-size: 1rem; line-height: 1.4; }
-  .contact__card { padding: 24px 20px; border-radius: 24px; box-shadow: 0 16px 36px -24px rgb(2 9 58 / 32%); }
-  .lead-form__field input { min-width: 0; width: 100%; font-size: 1rem; }
+  .contact__card { padding: 24px 20px; border-radius: 24px; border: 1px solid rgb(2 9 58 / 8%); box-shadow: 0 16px 36px -12px rgb(2 9 58 / 24%), 0 4px 12px rgb(2 9 58 / 8%); }
+  .lead-form { gap: 28px; }
+  .lead-form__field { gap: 12px; }
+  .lead-form__field label { font-size: 1.5rem; }
+  .lead-form__field input { min-width: 0; width: 100%; font-size: var(--fs-body); }
   .lead-form__alt { line-height: 1.6; }
 }

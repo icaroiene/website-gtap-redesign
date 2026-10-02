@@ -96,6 +96,7 @@
 @keyframes album-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
 .album__state { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; color: var(--color-white); font-size: var(--fs-body-lg); }
+.album__more { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 40px; font-size: var(--fs-body); }
 
 /* Navegação entre edições no fim */
 .album__nav {
@@ -138,10 +139,26 @@
 /* Ajustes exclusivos para celular — desktop preservado. */
 
 @media (max-width: 720px) {
-  .album__topbar { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .album { background: #020b28; }
+  .album > .page-bg { display: none; }
+  .album__head { padding-top: calc(var(--header-h) + var(--section-space)); padding-bottom: var(--section-space); }
+  .album__body { padding-bottom: var(--section-space); }
+  .album__topbar { align-items: center; flex-direction: column; gap: 32px; margin-bottom: 40px; }
   .album__switch { width: 100%; justify-content: space-between; }
-  .album__logo { max-width: 100%; height: auto; max-height: 90px; object-fit: contain; }
-  .album__grid { gap: 10px; }
-  .album__thumb { border-radius: 16px; }
-  .album__nav { gap: 16px; }
+  .album__switch-label { font-size: var(--fs-name); }
+  .album__switch-btn { width: 48px; height: 48px; font-size: 2rem; }
+  .album__head-grid { align-items: center; gap: 32px; text-align: center; }
+  .album__head-text { min-width: 0; }
+  .album__logo { max-width: 100%; height: auto; max-height: 110px; object-fit: contain; margin: 0 auto 32px; }
+  .album__lead { line-height: 1.5; }
+  .album__count { align-items: center; }
+  .album__grid { gap: 16px; }
+  .album__grid > li:nth-child(6n + 1):not(:last-child) { grid-column: auto; grid-row: auto; }
+  .album__thumb, .album__grid > li:nth-child(6n + 1):not(:last-child) .album__thumb { aspect-ratio: 1; border-radius: 18px; }
+  .album__thumb-idx { display: none; }
+  .album__nav { grid-template-columns: 1fr; gap: 24px; margin-top: var(--section-space); }
+  .album__nav-card--empty { display: none; }
+  .album__nav-text .name { font-size: var(--fs-name); }
+  .album__nav-dir { letter-spacing: .02em; }
+  .album__state { align-items: center; text-align: center; gap: 32px; line-height: 1.5; }
 }

@@ -1,4 +1,4 @@
-import { EVENT, ACTIONS } from "../../data/event";
+import { EVENT } from "../../data/event";
 import { useReveal } from "../../hooks/useReveal";
 import { AmbientVideo } from "../media/AmbientVideo";
 import { AMBIENT } from "../../data/media";
@@ -13,31 +13,32 @@ export const BannerSection = () => {
 
   return (
     <section className="hero" id="inicio" ref={revealRef}>
-      <AmbientVideo src={AMBIENT.praia} className="ambient--sea" mobile={false} />
+      <AmbientVideo src={AMBIENT.praia} poster={AMBIENT.praiaPoster} className="ambient--sea" mobile />
 
       <div className="container hero__content">
-        {/* Edição · data · cidade acima do título: contexto antes da promessa */}
-        <p className="hero__info" data-reveal data-reveal-index="0">
+        {/* Edição · data · cidade acima do título */}
+        <p className="hero__info hero__info--desktop" data-reveal data-reveal-index="0">
           <span>{EVENT.edition} GTAP</span>
           <span className="hero__info-dot" aria-hidden="true" />
           <span>{EVENT.dateLabelShort}</span>
           <span className="hero__info-dot" aria-hidden="true" />
           <span>{EVENT.city}/{EVENT.state}</span>
         </p>
+        <p className="hero__info hero__info--mobile">Salvador/BA 08 e 09 de outubro de 2026</p>
         <h1 className="display hero__title" data-reveal data-reveal-index="1">
           <span className="line"><span className="line__in">O único congresso do país</span></span>
-          <span className="line"><span className="line__in text-yellow">sobre Gestão Tributária</span></span>
+          <span className="line"><span className="line__in">sobre Gestão Tributária</span></span>
         </h1>
         <p className="body-lg hero__sub" data-reveal data-reveal-index="2">
-          voltado exclusivamente para a Administração Pública e Sistema S.
+          <span>voltado exclusivamente para a</span>{" "}<span>Administração Pública e Sistema S.</span>
         </p>
-        <div className="hero__actions" data-reveal data-reveal-index="3">
-          <a className="btn btn--yellow" href={ACTIONS.registrationUrl} target="_blank" rel="noopener noreferrer">
-            Garantir ingresso
-          </a>
-          <a className="btn btn--outline" href="#temas">Conheça os temas</a>
-        </div>
+
       </div>
+      <a className="hero__scroll-cue" href="#video" aria-label="Descer para a próxima seção">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 4v15m-6-6 6 6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </a>
     </section>
   );
 };

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { Footer } from "../../components/Footer/Footer";
-import { SplitWords } from "../../components/ui/SplitWords";
+import photoCounts from "../../data/galleryCounts.json";
 import { TransitionLink } from "../../components/ui/TransitionLink";
 import { AmbientVideo } from "../../components/media/AmbientVideo";
 import { AMBIENT } from "../../data/media";
@@ -12,36 +12,12 @@ import "./GaleriaPage.css";
 // "ix-gtap" -> "IX"
 const romanOf = (slug) => slug.split("-")[0].toUpperCase();
 
-// Contagem real de fotos por edição (JSONs locais em /api/galerias/<slug>.json)
-const usePhotoCounts = () => {
-  const [counts, setCounts] = useState(null);
-  useEffect(() => {
-    const controller = new AbortController();
-    let alive = true;
-    Promise.all(
-      EDITIONS.map((e) =>
-        fetch(`${import.meta.env.BASE_URL}api/galerias/${e.slug}.json`, { signal: controller.signal })
-          .then((r) => (r.ok ? r.json() : []))
-          .then((d) => [e.slug, Array.isArray(d) ? d.length : 0])
-          .catch(() => [e.slug, 0])
-      )
-    ).then((pairs) => {
-      if (alive) setCounts(Object.fromEntries(pairs));
-    });
-    return () => {
-      alive = false;
-      controller.abort();
-    };
-  }, []);
-  return counts;
-};
-
 const photosLabel = (n) => (n === 1 ? "1 foto" : `${n} fotos`);
 
 // Índice da galeria: hero com números reais, edição mais recente em destaque
 // (moldura r80) e as anteriores em cards com numeral romano.
 export const GaleriaPage = () => {
-  const counts = usePhotoCounts();
+  const counts = photoCounts;
   const revealRef = useReveal({ stagger: 70, deps: [counts ? 1 : 0] });
 
   useEffect(() => {
@@ -64,10 +40,10 @@ export const GaleriaPage = () => {
         <section className="gallery-hero">
           <div className="container">
             <p className="gallery-hero__eyebrow" data-reveal>Galeria</p>
-            <h1 className="display gallery-hero__title split" data-reveal data-reveal-index="1">
-              <SplitWords text="A memória de cada" />
+            <h1 className="display gallery-hero__title" data-reveal data-reveal-index="1">
+              A memória de cada
               <br />
-              <span className="text-yellow"><SplitWords text="edição do GTAP" start={4} /></span>
+              <span>edição do GTAP</span>
             </h1>
             <div className="gallery-hero__row" data-reveal data-reveal-index="2">
               <p className="body-lg gallery-hero__intro">
@@ -110,8 +86,8 @@ export const GaleriaPage = () => {
               </span>
             </TransitionLink>
 
-            <h2 className="display gallery-index__title split" data-reveal>
-              <SplitWords text="Edições anteriores" />
+            <h2 className="display gallery-index__title" data-reveal>
+              Edições anteriores
             </h2>
             <ul className="gallery-index__grid">
               {previous.map((edition, index) => (
@@ -125,7 +101,7 @@ export const GaleriaPage = () => {
                     aria-label={`Abrir álbum ${edition.label}`}
                   >
                     <span className="edition-card__img">
-                      <img src={edition.card} alt="" loading="lazy" />
+                      <img src={edition.card} alt="" loading="lazy" decoding="async" />
                     </span>
                     <span className="edition-card__num display" aria-hidden="true">{romanOf(edition.slug)}</span>
                     <span className="edition-card__label">

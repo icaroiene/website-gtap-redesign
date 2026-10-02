@@ -34,6 +34,12 @@
 .notfound__actions { display: flex; flex-wrap: wrap; gap: 16px; }
 
 @media (max-width: 720px) {
+  .notfound { min-height: 0; background: #020b28; padding-block: calc(var(--header-h) + var(--section-space)) var(--section-space); text-align: center; }
+  .notfound > .page-bg, .notfound__watermark { display: none; }
+  .notfound__eyebrow { font-size: var(--fs-body); margin-bottom: 24px; }
+  .notfound__title { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -.015em; margin-bottom: 32px; }
+  .notfound__title .text-yellow { color: var(--color-white); }
+  .notfound__text { line-height: 1.5; margin-bottom: 40px; }
   .notfound__actions { flex-direction: column; }
   .notfound__actions .btn { width: 100%; }
 }

@@ -4,7 +4,7 @@
 const listeners = new Set();
 let pending = false;
 
-export const CURTAIN_DOWN_MS = 560;
+export const CURTAIN_DOWN_MS = 280;
 
 export const routeTransition = {
   begin() {

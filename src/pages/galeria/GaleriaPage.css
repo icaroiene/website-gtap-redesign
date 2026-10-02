@@ -154,14 +154,27 @@
 /* Ajustes exclusivos para celular — desktop preservado. */
 
 @media (max-width: 720px) {
-  .gallery-hero { padding-top: calc(var(--header-h) + 36px); padding-bottom: 32px; }
-  .gallery-hero__eyebrow { font-size: 0.875rem; letter-spacing: 0.1em; }
-  .gallery-feature { aspect-ratio: 4 / 5; }
+  .gallery { background: #020b28; }
+  .gallery > .page-bg { display: none; }
+  .gallery-hero { padding-top: calc(var(--header-h) + var(--section-space)); padding-bottom: var(--section-space); text-align: center; }
+  .gallery-hero__eyebrow { font-size: var(--fs-body); letter-spacing: 0.1em; margin-bottom: 24px; }
+  .gallery-hero__title { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -.015em; max-width: none; }
+  .gallery-hero__row { align-items: center; gap: 40px; margin-top: 32px; }
+  .gallery-hero__intro { line-height: 1.5; }
+  .gallery-hero__stats { gap: 48px; }
+  .gallery-hero__stats div { align-items: center; }
+  .gallery-index { padding-bottom: var(--section-space); }
+  .gallery-index__title { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -.015em; text-align: center; margin: var(--section-space) 0 40px; }
+  .gallery-feature { aspect-ratio: 1 / 1; }
   .gallery-feature__body { left: 20px; right: 20px; bottom: 24px; }
   .gallery-feature__logo { max-width: 100%; height: auto; max-height: 80px; object-fit: contain; }
-  .gallery-index__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
+  .gallery-feature__tag { font-size: var(--fs-body); letter-spacing: .04em; }
+  .gallery-feature__meta { flex-wrap: wrap; gap: 16px; }
+  .gallery-index__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
   .edition-card { border-radius: 18px; }
   .edition-card__label { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 12px; }
-  .edition-card__label .name { font-size: 1.5rem; }
-  .edition-card__meta { font-size: 0.875rem; }
+  .edition-card__label .name { font-size: var(--fs-name); }
+  .edition-card__meta { font-size: var(--fs-body); white-space: normal; }
+  .edition-card__img { aspect-ratio: 1; position: relative; }
+  .edition-card__label { position: relative; }
 }

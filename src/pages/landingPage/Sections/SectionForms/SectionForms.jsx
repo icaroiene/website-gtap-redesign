@@ -1,7 +1,6 @@
 import { Forms } from "../../../../components/Forms/Forms";
 import { EVENT } from "../../../../data/event";
 import { useReveal } from "../../../../hooks/useReveal";
-import { BgWaves } from "../../../../components/media/BgWaves";
 import "./SectionForms.css";
 
 // Contato: superfície creme, título da família display e formulário branco.
@@ -9,11 +8,10 @@ export const SectionForms = () => {
   const revealRef = useReveal({ stagger: 100 });
 
   return (
-    <section className="contact on-yellow" id="contato" ref={revealRef}>
-      <BgWaves tone="navy" />
+    <section className="contact" id="contato" ref={revealRef}>
       <div className="container contact__grid">
         <div className="contact__intro">
-          <h2 className="display contact__title" data-reveal>Fale com a gente</h2>
+          <h2 className="h2 contact__title" data-reveal>Fale com a gente</h2>
           <p className="body-lg contact__text" data-reveal data-reveal-index="1">
             Dúvidas sobre o GTAP? Fale com nossa equipe.
           </p>

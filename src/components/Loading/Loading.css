@@ -8,12 +8,12 @@
   place-items: center;
   background: var(--color-navy);
   transform: translateY(0);
-  transition: transform 900ms cubic-bezier(0.76, 0, 0.24, 1);
+  transition: transform 360ms cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
 }
 .loading.is-leaving { transform: translateY(-100%); }
 /* Transição de rota: a cortina desce antes de subir */
-.loading.is-route { animation: ld-curtain-down 520ms cubic-bezier(0.76, 0, 0.24, 1) both; }
+.loading.is-route { animation: ld-curtain-down 260ms cubic-bezier(0.76, 0, 0.24, 1) both; }
 .loading.is-route.is-leaving { animation: none; }
 @keyframes ld-curtain-down { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 
@@ -22,15 +22,15 @@
   position: relative;
   width: clamp(240px, calc(var(--layout-unit) * 41.46), 796px);
   aspect-ratio: 796 / 250;
-  transition: transform 900ms cubic-bezier(0.76, 0, 0.24, 1), opacity 500ms ease;
+  transition: transform 360ms cubic-bezier(0.76, 0, 0.24, 1), opacity 500ms ease;
 }
 .loading.is-leaving .loading__logo { transform: translateY(-40px); opacity: 0; }
 
 .loading__part { position: absolute; display: block; object-fit: contain; }
-.loading__x     { left: 2%;    top: 3.2%; width: 15.9%; height: 52.5%; animation: ld-x 700ms var(--ease-out) both; }
-.loading__globe { left: 18.9%; top: 0;    width: 20.9%; height: 54.8%; animation: ld-globe 800ms var(--ease-out) 220ms both; }
-.loading__gtap  { left: 41.8%; top: 1.9%; width: 55.5%; height: 54.8%; animation: ld-gtap 700ms var(--ease-out) 120ms both; }
-.loading__text  { left: 0;     top: 54.8%; width: 100%; height: 45.2%; animation: ld-text 700ms var(--ease-out) 620ms both; }
+.loading__x     { left: 2%;    top: 3.2%; width: 15.9%; height: 52.5%; animation: ld-x 300ms var(--ease-out) both; }
+.loading__globe { left: 18.9%; top: 0;    width: 20.9%; height: 54.8%; animation: ld-globe 300ms var(--ease-out) 60ms both; }
+.loading__gtap  { left: 41.8%; top: 1.9%; width: 55.5%; height: 54.8%; animation: ld-gtap 300ms var(--ease-out) 40ms both; }
+.loading__text  { left: 0;     top: 54.8%; width: 100%; height: 45.2%; animation: ld-text 300ms var(--ease-out) 100ms both; }
 
 @keyframes ld-x     { from { opacity: 0; transform: translateX(-46px); } to { opacity: 1; transform: none; } }
 @keyframes ld-gtap  { from { opacity: 0; transform: translateX(46px); }  to { opacity: 1; transform: none; } }

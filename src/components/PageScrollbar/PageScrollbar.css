@@ -1,0 +1,41 @@
+.page-scrollbar { display: none; }
+@media (min-width: 1024px) {
+  html.has-page-scrollbar { scrollbar-width: none; }
+  html.has-page-scrollbar::-webkit-scrollbar { width: 0; height: 0; }
+  .page-scrollbar {
+    display: block;
+    position: fixed;
+    z-index: 40;
+    top: 50%; right: 16px;
+    width: 6px; height: 180px;
+    margin-top: -90px;
+    border-radius: 3px;
+    background: rgb(221 169 46 / 16%);
+    opacity: 0;
+    cursor: pointer;
+    touch-action: none;
+    transition: opacity 240ms var(--ease-out);
+  }
+  .page-scrollbar[hidden] { display: none; }
+  .page-scrollbar::before { content: ""; position: absolute; inset: -8px -12px; }
+  .page-scrollbar.is-active, .page-scrollbar:hover,
+  .page-scrollbar:focus-visible, .page-scrollbar.is-dragging { opacity: 1; }
+  .page-scrollbar__thumb {
+    position: absolute; top: 0; left: 0;
+    width: 6px; height: 36px;
+    border-radius: 3px;
+    background: var(--color-gold);
+  }
+  .page-scrollbar:hover .page-scrollbar__thumb,
+  .page-scrollbar.is-dragging .page-scrollbar__thumb { background: var(--color-yellow); }
+  body.no-scroll .page-scrollbar { visibility: hidden; }
+  @media (prefers-reduced-motion: reduce) {
+    .page-scrollbar { opacity: 1; transition: none; }
+  }
+}
+
+@media (max-width: 720px) {
+  html, body { scrollbar-width: none; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .page-scrollbar { display: none; }
+}

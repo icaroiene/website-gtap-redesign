@@ -72,30 +72,8 @@ export function useReveal({ threshold = 0, stagger = 80, deps = [] } = {}) {
     );
     pending.forEach((el) => io.observe(el));
 
-    // Fallback: checa por scroll caso o observer não dispare.
-    let raf = 0;
-    const check = () => {
-      raf = 0;
-      const h = window.innerHeight;
-      pending.forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.top < h * 0.94 && r.bottom > 0) {
-          show(el);
-          io.unobserve(el);
-          pending.delete(el);
-        }
-      });
-      if (pending.size === 0) window.removeEventListener("scroll", onScroll);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(check);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => {
       io.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
       pending.forEach((el) => el.classList.remove("reveal-init"));
     };
   }, [threshold, stagger, depsKey]);

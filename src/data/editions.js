@@ -21,7 +21,12 @@ export const LATEST_EDITION = EDITIONS[EDITIONS.length - 1];
 // Resolve por slug canônico OU por rótulo legado (ex.: "IX GTAP", "IX%20GTAP").
 export function findEdition(param) {
   if (!param) return null;
-  const decoded = decodeURIComponent(param).trim().toLowerCase();
+  let decoded;
+  try {
+    decoded = decodeURIComponent(param).trim().toLowerCase();
+  } catch {
+    return null;
+  }
   return (
     EDITIONS.find((e) => e.slug === decoded) ||
     EDITIONS.find((e) => e.label.toLowerCase() === decoded) ||

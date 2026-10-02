@@ -2,18 +2,20 @@
 
 .hero {
   position: relative;
-  min-height: clamp(620px, calc(var(--layout-unit) * 61.25), 1176px);
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   overflow: clip;
   background: var(--color-navy);
-  padding-block: calc(var(--header-h) + var(--space-16)) var(--space-16);
+  padding-block: calc(var(--header-h) + 40px);
   isolation: isolate;
 }
 
 .hero__content {
-  /* Compensa o padding do header: sobe o bloco para o centro óptico */
-  padding-bottom: clamp(40px, calc(var(--layout-unit) * 6), 110px);
+  width: 100%;
+  margin-inline: auto;
+  padding-bottom: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -24,8 +26,11 @@
 .hero__title {
   color: var(--color-white);
   line-height: 1.1;
-  max-width: 1131px;
-  margin-bottom: clamp(16px, calc(var(--layout-unit) * 1.7), 32px);
+  width: 100%;
+  max-width: 1206px;
+  font-size: clamp(4rem, 6.2vw, 5.75rem);
+  text-align: center;
+  margin-bottom: 8px;
 }
 .hero__title.is-visible { animation: none; }
 .hero__title .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
@@ -44,62 +49,86 @@
 
 .hero__sub {
   color: var(--color-white);
-  max-width: 1015px;
-  line-height: 1.1;
+  max-width: 900px;
+  font-size: clamp(1.25rem, 1.65vw, 1.75rem);
+  line-height: 1.35;
 }
 
-/* Linha de informação: texto puro (sem contorno, para não parecer botão),
-   caixa alta espaçada com pontos amarelos entre os itens */
+/* Edição, data e cidade em amarelo, sem cápsula. */
 .hero__info {
+  max-width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 6px clamp(14px, calc(var(--layout-unit) * 1.2), 24px);
   font-weight: 600;
-  font-size: var(--fs-nav);
+  font-size: clamp(1.125rem, 1.5vw, 1.5rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-white);
-  margin-bottom: clamp(20px, calc(var(--layout-unit) * 2), 36px);
+  color: var(--color-yellow);
+  margin-bottom: clamp(36px, 4vw, 56px);
 }
 .hero__info-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--color-white);
+  background: var(--color-yellow);
 }
 
-.hero__actions {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(12px, calc(var(--layout-unit) * 1.2), 20px);
-  margin-top: clamp(32px, calc(var(--layout-unit) * 3.4), 64px);
-}
-
+/* O pôster substitui o vídeo apenas no celular. */
+.hero > .ambient .ambient__poster, .hero__mobile-break { display: none; }
 @media (max-width: 720px) {
-  .hero__actions { width: 100%; flex-direction: column; }
-  .hero__actions .btn { width: 100%; }
-  .hero {
-    min-height: auto;
-    padding-block: calc(var(--header-h) + var(--space-12)) var(--space-16);
-  }
-  .hero__content { text-align: left; align-items: flex-start; }
-  .hero__title { font-size: clamp(3rem, calc(var(--layout-unit) * 12), 4.4rem); }
-  .hero__sub { font-size: 1.15rem; }
-  .hero__info { font-size: 0.85rem; letter-spacing: 0.12em; justify-content: flex-start; }
+  .hero { min-height: 100svh; padding-block: calc(var(--header-h) + 40px) 64px; background: #051b36; }
+  .hero > .ambient { opacity: .28; }
+  .hero > .ambient .ambient__poster { display: block; filter: blur(4px); transform: scale(1.04); object-position: 55% center; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgb(2 9 58 / 25%), transparent 45%, rgb(2 9 58 / 50%)); pointer-events: none; }
+  .hero__content { text-align: center; align-items: center; }
+  .hero__mobile-break { display: inline; }
+  .hero__title { font-size: clamp(2.75rem, 12vw, 4.5rem); line-height: 1.04; margin-bottom: 20px; }
+  .hero__title .line__in { text-wrap: initial; }
+  .hero__title .line + .line { margin-top: 8px; }
+  .hero__info { gap: 6px 12px; font-size: .9375rem; letter-spacing: .06em; line-height: 1.5; margin-bottom: 28px; }
+  .hero__info span:nth-child(3) { order: 1; flex-basis: 100%; }
+  .hero__info-dot:nth-child(4) { display: none; }
+  .hero__sub { font-size: 1.125rem; line-height: 1.5; max-width: 29ch; text-wrap: balance; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero__title .line__in { transform: none; animation: none !important; }
 }
 
-/* Ajustes exclusivos para celular — desktop preservado. */
-
+/* Quebras específicas da hero mobile. */
+.hero__info--mobile { display: none; }
+.hero__scroll-cue { display: none; }
 @media (max-width: 720px) {
-  .hero { padding-block: calc(var(--header-h) + 32px) 48px; }
-  .hero__content { padding-bottom: 0; }
-  .hero__title { font-size: clamp(2.7rem, 11.7vw, 3.8rem); line-height: 1.06; margin-bottom: 24px; }
-  .hero__title .line__in { text-wrap: balance; }
-  .hero__info { gap: 8px 12px; font-size: 0.75rem; letter-spacing: 0.07em; line-height: 1.5; margin-bottom: 24px; }
-  .hero__info span:nth-child(3) { order: 1; flex-basis: 100%; }
-  .hero__info-dot:nth-child(4) { display: none; }
-  .hero__sub { line-height: 1.4; max-width: 34ch; }
-  .hero__actions { margin-top: 28px; gap: 12px; }
+  .hero__scroll-cue {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    color: var(--color-white);
+    border: 1px solid rgb(255 255 255 / 28%);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 6%);
+  }
+  .hero__scroll-cue svg { animation: hero-scroll-cue 2s ease-in-out infinite; }
+  .hero__scroll-cue:focus-visible { outline: 2px solid var(--color-yellow); outline-offset: 4px; }
+}
+@keyframes hero-scroll-cue {
+  0%, 100% { transform: translateY(-3px); }
+  50% { transform: translateY(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-cue svg { animation: none; }
+}
+@media (max-width: 720px) {
+  .hero__info--desktop { display: none; }
+  .hero__info--mobile { display: block; white-space: nowrap; font-size: clamp(.875rem, 4.1vw, 1.4375rem); letter-spacing: .015em; }
+  .hero__title { font-size: clamp(2.1875rem, 9.8vw, 4.25rem); }
+  .hero__title .line__in { white-space: nowrap; }
+  .hero__sub { max-width: none; font-size: clamp(1.125rem, 5vw, 1.5625rem); }
+  .hero__sub span { display: block; white-space: nowrap; }
 }

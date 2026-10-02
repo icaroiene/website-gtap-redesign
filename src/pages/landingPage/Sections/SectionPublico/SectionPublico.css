@@ -8,7 +8,7 @@
 }
 
 /* Mesmo padrão de título de Ingressos: linha pequena + display Bebas */
-.marquee__head { text-align: center; margin: 0 var(--gutter) clamp(36px, calc(var(--layout-unit) * 3.6), 72px); }
+.marquee__head { text-align: left; margin: 0 var(--gutter) clamp(36px, calc(var(--layout-unit) * 3.6), 72px); }
 .marquee__pre {
   color: var(--color-navy);
   font-size: var(--fs-lead);

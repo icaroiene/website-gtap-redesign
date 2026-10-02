@@ -17,6 +17,13 @@ export const PhotoLightbox = ({ images, index, onClose, onNav }) => {
     document.body.classList.add("no-scroll");
     closeRef.current?.focus();
 
+    return () => {
+      document.body.classList.remove("no-scroll");
+      if (triggerRef.current instanceof HTMLElement) triggerRef.current.focus({ preventScroll: true });
+    };
+  }, []);
+
+  useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -43,9 +50,7 @@ export const PhotoLightbox = ({ images, index, onClose, onNav }) => {
     };
     document.addEventListener("keydown", onKey);
     return () => {
-      document.body.classList.remove("no-scroll");
       document.removeEventListener("keydown", onKey);
-      if (triggerRef.current instanceof HTMLElement) triggerRef.current.focus();
     };
   }, [index, total, onClose, onNav]);
 
@@ -86,7 +91,7 @@ export const PhotoLightbox = ({ images, index, onClose, onNav }) => {
         )}
 
         <figure className="lightbox__figure">
-          <img src={current.url || current} alt={`Foto ${index + 1} da edição`} />
+          <img src={current.url || current} alt={`Foto ${index + 1} da edição`} decoding="async" />
         </figure>
 
         {total > 1 && (
@@ -100,7 +105,7 @@ export const PhotoLightbox = ({ images, index, onClose, onNav }) => {
           </button>
         )}
 
-        <p className="lightbox__counter" aria-hidden="true">
+        <p className="lightbox__counter" aria-live="polite" aria-atomic="true">
           {index + 1} / {total}
         </p>
 

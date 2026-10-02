@@ -4,14 +4,14 @@
   position: relative;
   background: var(--color-navy);
   color: var(--color-white);
-  padding-block: clamp(56px, calc(var(--layout-unit) * 4.2), 80px) clamp(64px, calc(var(--layout-unit) * 5), 96px);
+  padding-block: var(--section-space);
   overflow: clip;
   isolation: isolate;
 }
 
 .speakers__title {
   text-align: center;
-  margin-bottom: clamp(32px, calc(var(--layout-unit) * 4.5), 86px);
+  margin-bottom: clamp(28px, 3vw, 48px);
 }
 
 .speakers__grid {
@@ -96,9 +96,16 @@
 /* Ajustes exclusivos para celular — desktop preservado. */
 
 @media (max-width: 720px) {
-  .speakers__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; max-width: none; }
+  .speakers__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; max-width: none; }
   .speaker-card__photo { border-radius: 18px; }
-  .speaker-card__name { font-size: clamp(1.4rem, 6vw, 1.8rem); line-height: 1.05; margin-top: 14px; }
-  .speaker-card__role { font-size: 0.875rem; line-height: 1.4; }
+  .speaker-card__name { font-size: var(--fs-name); line-height: 1.1; margin-top: 14px; }
+  .speaker-card__role { font-size: var(--fs-body); line-height: 1.45; }
   .speaker-card__hint { opacity: 1; transform: translate(-50%, 0); bottom: 10px; font-size: 0.7rem; padding: 6px 10px; letter-spacing: 0; }
+}
+
+/* Mais conteúdo por linha, com fotos proporcionais ao texto. */
+@media (min-width: 1100px) {
+  .speakers__grid { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 32px 24px; }
+  .speakers__grid > li { grid-column: span 2; }
+  .speakers__grid > li:nth-child(4n + 1):nth-last-child(3) { grid-column: 2 / span 2; }
 }

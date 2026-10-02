@@ -5,9 +5,8 @@ import "./AmbientVideo.css";
 // Vídeo ambiente (mudo, em loop) para fundos e cards: só baixa e toca quando
 // está perto da tela, pausa quando sai, mostra o pôster até o primeiro frame.
 // Com reduced-motion (ou `mobile={false}` em telas pequenas) fica só o pôster.
-// Checagem por geometria no scroll + timer (IntersectionObserver não dispara
-// em documento oculto e a rolagem suave é programática).
-export const AmbientVideo = ({ src, poster, className = "", margin = 800, mobile = true }) => {
+// Observadores separam o pré-carregamento da reprodução; abas ocultas pausam.
+export const AmbientVideo = ({ src, poster, className = "", margin = 800, mobile = false }) => {
   const ref = useRef(null);
   const reduced = useReducedMotion();
   const [ready, setReady] = useState(false);
@@ -18,32 +17,44 @@ export const AmbientVideo = ({ src, poster, className = "", margin = 800, mobile
     // Avaliado a cada tick (não só no mount): o viewport pode mudar de tamanho
     const small = window.matchMedia("(max-width: 720px)");
     let loaded = false;
-    const near = () => {
-      const r = v.getBoundingClientRect();
-      return r.bottom > -margin && r.top < window.innerHeight + margin;
-    };
+    let visible = false;
+    let near = false;
     const tick = () => {
-      if (!mobile && small.matches) {
+      if (document.hidden || (!mobile && small.matches)) {
         if (loaded && !v.paused) v.pause();
         return;
       }
-      if (near()) {
+      if (near) {
         if (!loaded) {
           loaded = true;
           v.src = src;
           v.load();
         }
+      }
+      if (loaded && visible) {
         if (v.paused) v.play().catch(() => {});
       } else if (loaded && !v.paused) {
         v.pause();
       }
     };
-    tick();
-    window.addEventListener("scroll", tick, { passive: true });
-    const poll = setInterval(tick, 2500);
+    const target = v.closest("section") || v.parentElement;
+    const preload = new IntersectionObserver(([entry]) => {
+      near = entry.isIntersecting;
+      tick();
+    }, { rootMargin: `${margin}px` });
+    const playback = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      tick();
+    });
+    preload.observe(target);
+    playback.observe(target);
+    document.addEventListener("visibilitychange", tick);
+    small.addEventListener("change", tick);
     return () => {
-      window.removeEventListener("scroll", tick);
-      clearInterval(poll);
+      preload.disconnect();
+      playback.disconnect();
+      document.removeEventListener("visibilitychange", tick);
+      small.removeEventListener("change", tick);
       v.pause();
     };
   }, [src, reduced, mobile, margin]);

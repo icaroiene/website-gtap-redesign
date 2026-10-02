@@ -11,9 +11,12 @@ import { SectionDepoimentos } from "./Sections/SectionDepoimentos/SectionDepoime
 import { SectionInvestimento } from "./Sections/SectionInvestimentos/SectionInvestimento";
 import { SectionLocal } from "./Sections/SectionLocal/SectionLocal";
 import { SectionForms } from "./Sections/SectionForms/SectionForms";
-import { LEGACY_HASH } from "../../data/event";
+import { AmbientVideo } from "../../components/media/AmbientVideo";
+import { AMBIENT } from "../../data/media";
+import "./LandingPage.css";
 
-// Ordem conforme o protótipo Figma; Depoimentos, Local e Contato
+// Instituições seguem Temas para dar continuidade ao fundo branco.
+// Depoimentos, Local e Contato
 // (não desenhados no protótipo) seguem a mesma linguagem visual.
 export const LandingPage = () => {
   const [data, setData] = useState([]);
@@ -30,18 +33,6 @@ export const LandingPage = () => {
     return () => controller.abort();
   }, []);
 
-  // Hashes legados (#preços, #investimento) -> #ingressos
-  useEffect(() => {
-    const normalizeHash = () => {
-      const raw = decodeURIComponent(window.location.hash.replace("#", ""));
-      const target = LEGACY_HASH[raw];
-      if (target) document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
-    };
-    normalizeHash();
-    window.addEventListener("hashchange", normalizeHash);
-    return () => window.removeEventListener("hashchange", normalizeHash);
-  }, []);
-
   return (
     <>
       <Navbar />
@@ -49,10 +40,13 @@ export const LandingPage = () => {
         <BannerSection />
         <SectionVideo data={data} />
         <SectionTemas data={data} />
-        <SectionPalestrantes data={data} />
         <SectionPublico data={data} />
-        <SectionGaleria />
-        <SectionDepoimentos data={data} />
+        <div className="speakers-gallery">
+          <AmbientVideo src={AMBIENT.farol} className="ambient--sea" mobile={false} />
+          <SectionPalestrantes data={data} />
+          <SectionGaleria />
+          <SectionDepoimentos data={data} />
+        </div>
         <SectionInvestimento />
         <SectionLocal data={data} />
         <SectionForms />
